@@ -123,7 +123,7 @@
 		EDA388272584258300C426D3 = {
 			isa = PBXGroup;
 			children = (
-				EDA388322584258300C426D3 /* memories */,
+				EDA388322584258300C426D3 /* Sources */,
 				EDA388442584258500C426D3 /* UnitTests */,
 				EDA3884F2584258600C426D3 /* UITests */,
 				EDA388312584258300C426D3 /* Products */,
@@ -140,7 +140,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EDA388322584258300C426D3 /* memories */ = {
+		EDA388322584258300C426D3 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				ED7C0D2F2587098700F3D30B /* Models */,
@@ -151,7 +151,7 @@
 				EDA388372584258500C426D3 /* Assets.xcassets */,
 				EDA3883C2584258500C426D3 /* Info.plist */,
 			);
-			path = memories;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		EDA388442584258500C426D3 /* UnitTests */ = {
@@ -468,7 +468,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = memories/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -490,7 +490,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = memories/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
