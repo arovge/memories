@@ -1,24 +1,24 @@
-name: Tests
+name: Memories
 
-on: pull_request
+on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
     - name: build
-      run: echo hello world
+      run: xcodebuild -quiet -project Memories.xcodeproj -scheme Memories | xcpretty
 
   unit_tests:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
     - name: build
-      run: echo hello world
+      run: xcodebuild -project Memories.xcodeproj -scheme Memories -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.0' test | xcpretty
 
   ui_tests:
     needs: unit_tests
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
     - name: build
-      run: echo hello world
+      run: xcodebuild -project Memories.xcodeproj -scheme UITests -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.0' test | xcpretty
