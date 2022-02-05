@@ -1,9 +1,6 @@
 name: Memories
 
-on:
-  pull_request:
-    types:
-      - opened
+on: push
 
 jobs:
   build:
