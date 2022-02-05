@@ -1,11 +1,13 @@
 import SwiftUI
-import Photos
 import PhotosUI
 
 class DashboardViewModel: ObservableObject {
     @Published var media: [MediaWrapper] = []
     @Published var loading: Bool = true
+    @Published var layout: ColumnLayout = .single
     @Published var error: Bool = false
+    @Published var hasPhotosAccess: Bool = false
+    private let photosService: PhotosService = PhotosService()
     private var started: Bool = false
     private let requestOptions: PHImageRequestOptions = PHImageRequestOptions()
     
@@ -19,6 +21,18 @@ class DashboardViewModel: ObservableObject {
         guard !started else { return }
         started = true
         
+        photosService.requestAccess { status in
+            switch status {
+            case .authorized:
+                DispatchQueue.main.async { self.hasPhotosAccess = true }
+                self.fetchPhotos()
+            default:
+                self.hasPhotosAccess = false
+            }
+        }
+    }
+    
+    func fetchPhotos() {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             .init(key: "creationDate", ascending: false)
@@ -44,7 +58,7 @@ class DashboardViewModel: ObservableObject {
             }
         }
         
-        loading = false
+        DispatchQueue.main.async { self.loading = false }
     }
     
     func requestImage(for asset: PHAsset, with manager: PHImageManager) {
@@ -55,11 +69,21 @@ class DashboardViewModel: ObservableObject {
             options: self.requestOptions,
             resultHandler: { image, info in
                 if let image = image {
-                    let wrapper = MediaWrapper(image, asset)
+                    let wrapper = MediaWrapper.image(image, asset)
                     if wrapper.isMemory {
-                        self.media.append(wrapper)
+                        DispatchQueue.main.async {
+                            self.media.append(wrapper)
+                        }
                     }
                 }
             })
+    }
+    
+    func toggleLayout() {
+        layout = layout.next()
+    }
+    
+    func share() {
+        
     }
 }

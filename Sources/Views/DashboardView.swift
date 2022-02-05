@@ -9,17 +9,25 @@ struct DashboardView: View {
                 ProgressView()
                     .foregroundColor(.secondaryLabel)
             } else {
-                HStack {
-                    Text(today)
-                        .foregroundColor(.secondaryLabel)
-                        .font(.headline)
-                    Spacer()
-                }
-                
-                MemoriesView($viewModel.media)
+                MemoriesView(viewModel: viewModel)
             }
         }
         .navigationBarTitle("Your memories")
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Text(today)
+                    .foregroundColor(.secondaryLabel)
+                    .font(.headline)
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    viewModel.toggleLayout()
+                } label: {
+                    Image(systemName: "square.grid.2x2")
+                }
+            }
+        }
         .onAppear {
             viewModel.handleAppear()
         }

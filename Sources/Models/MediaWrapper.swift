@@ -1,40 +1,40 @@
 import UIKit
 import PhotosUI
 
-enum MediaType {
-    case image
-    case video
-}
-
-struct MediaWrapper: Hashable {
-    let uiImage: UIImage
-    let asset: PHAsset
-    let type: MediaType
+// TODO: Support video
+enum MediaWrapper: Hashable {
+    case image(UIImage, PHAsset)
+    case video(UIImage, PHAsset)
     
-    init(_ uiImage: UIImage, _ asset: PHAsset) {
-        self.uiImage = uiImage
-        self.asset = asset
-        self.type = .image
-    }
-    
-    // TODO: Change this initializer to support videos
-//    init(_ uiImage: UIImage, _ asset: PHAsset) {
-//        self.uiImage = uiImage
-//        self.asset = asset
-//        self.type = .video
-//    }
+    var uuid: UUID { UUID() }
     
     var isMemory: Bool {
-        if let creationDate = asset.creationDate {
-            let todayDate = Date()
-            let today = Calendar.current.dateComponents([.month, .day], from: todayDate)
-            let createdWhen = Calendar.current.dateComponents([.month, .day], from: creationDate)
-            return today.month == createdWhen.month && today.month == createdWhen.month
+//        guard let createdWhen = createdWhen else { return false }
+//        let today = Calendar.current.dateComponents([.month, .day], from: Date())
+//        let createdDate = Calendar.current.dateComponents([.month, .day], from: createdWhen)
+//        return today.month == createdDate.month && today.month == createdDate.month
+        true
+    }
+    
+    var createdWhen: Date? {
+        switch self {
+        case .image(_, let asset):
+            return asset.creationDate
+        case .video(_, let asset):
+            return asset.creationDate
         }
-        return false
     }
     
     var formattedCreatedWhen: String? {
-        asset.creationDate?.toString(format: "MMMM d, yyyy")
+        createdWhen?.toString(format: "MMMM d, yyyy")
+    }
+    
+    var placeholderImage: UIImage {
+        switch self {
+        case .image(let image, _):
+            return image
+        case .video(let image, _):
+            return image
+        }
     }
 }

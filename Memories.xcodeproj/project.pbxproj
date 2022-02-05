@@ -19,6 +19,10 @@
 		EDA388382584258500C426D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA388372584258500C426D3 /* Assets.xcassets */; };
 		EDA388462584258600C426D3 /* memoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388452584258600C426D3 /* memoriesTests.swift */; };
 		EDA388512584258600C426D3 /* memoriesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388502584258600C426D3 /* memoriesUITests.swift */; };
+		EDAA616B27AE4A1200445D68 /* MediaGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAA616A27AE4A1200445D68 /* MediaGridView.swift */; };
+		EDAA616D27AE4A5500445D68 /* ColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAA616C27AE4A5500445D68 /* ColumnLayout.swift */; };
+		EDAA617027AE4ACA00445D68 /* PhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAA616F27AE4ACA00445D68 /* PhotosService.swift */; };
+		EDAA617227AE4CB800445D68 /* StandardLibrary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAA617127AE4CB800445D68 /* StandardLibrary+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +61,10 @@
 		EDA3884C2584258600C426D3 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDA388502584258600C426D3 /* memoriesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memoriesUITests.swift; sourceTree = "<group>"; };
 		EDA388522584258600C426D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDAA616A27AE4A1200445D68 /* MediaGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaGridView.swift; sourceTree = "<group>"; };
+		EDAA616C27AE4A5500445D68 /* ColumnLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnLayout.swift; sourceTree = "<group>"; };
+		EDAA616F27AE4ACA00445D68 /* PhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosService.swift; sourceTree = "<group>"; };
+		EDAA617127AE4CB800445D68 /* StandardLibrary+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StandardLibrary+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +98,7 @@
 				ED6659CE258430C4001EF405 /* DashboardView.swift */,
 				ED6659E725843832001EF405 /* MemoriesView.swift */,
 				ED7C0D2A2586FD0000F3D30B /* MediaView.swift */,
+				EDAA616A27AE4A1200445D68 /* MediaGridView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -100,6 +109,7 @@
 				ED6659DC2584354F001EF405 /* SwiftUI+.swift */,
 				ED665A012584B1CE001EF405 /* Foundation+.swift */,
 				ED665A0625852A51001EF405 /* DispatchQueue+.swift */,
+				EDAA617127AE4CB800445D68 /* StandardLibrary+.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -116,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				ED7C0D302587099300F3D30B /* MediaWrapper.swift */,
+				EDAA616C27AE4A5500445D68 /* ColumnLayout.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -145,6 +156,7 @@
 			children = (
 				ED7C0D2F2587098700F3D30B /* Models */,
 				ED6659DB25843544001EF405 /* Utility */,
+				EDAA616E27AE4ABA00445D68 /* Services */,
 				ED6659F82584AF5B001EF405 /* ViewModels */,
 				ED6659CD258430B1001EF405 /* Views */,
 				EDA388332584258300C426D3 /* RootView.swift */,
@@ -170,6 +182,14 @@
 				EDA388522584258600C426D3 /* Info.plist */,
 			);
 			path = UITests;
+			sourceTree = "<group>";
+		};
+		EDAA616E27AE4ABA00445D68 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				EDAA616F27AE4ACA00445D68 /* PhotosService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,11 +321,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED7C0D2B2586FD0000F3D30B /* MediaView.swift in Sources */,
+				EDAA616B27AE4A1200445D68 /* MediaGridView.swift in Sources */,
 				ED6659CF258430C4001EF405 /* DashboardView.swift in Sources */,
+				EDAA616D27AE4A5500445D68 /* ColumnLayout.swift in Sources */,
+				EDAA617227AE4CB800445D68 /* StandardLibrary+.swift in Sources */,
 				ED6659FA2584AF90001EF405 /* DashboardViewModel.swift in Sources */,
 				ED6659E825843832001EF405 /* MemoriesView.swift in Sources */,
 				ED7C0D312587099300F3D30B /* MediaWrapper.swift in Sources */,
 				ED6659DD2584354F001EF405 /* SwiftUI+.swift in Sources */,
+				EDAA617027AE4ACA00445D68 /* PhotosService.swift in Sources */,
 				ED665A0725852A51001EF405 /* DispatchQueue+.swift in Sources */,
 				ED665A022584B1CE001EF405 /* Foundation+.swift in Sources */,
 				EDA388342584258300C426D3 /* RootView.swift in Sources */,

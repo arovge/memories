@@ -2,15 +2,17 @@ import SwiftUI
 
 struct MediaView: View {
     let media: MediaWrapper
+    let share: () -> Void
     
-    init(for media: MediaWrapper) {
+    init(for media: MediaWrapper, share: @escaping () -> Void) {
         self.media = media
+        self.share = share
     }
     
     var body: some View {
         VStack {
             Spacer()
-            Image(uiImage: media.uiImage)
+            Image(uiImage: media.placeholderImage)
                 .resizable()
                 .scaledToFit()
             if let date = date {
@@ -19,6 +21,9 @@ struct MediaView: View {
                     .font(.callout)
             }
             Spacer()
+        }
+        .contextMenu {
+            Button("Share", action: share)
         }
     }
     
