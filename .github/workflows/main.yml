@@ -1,25 +1,24 @@
 name: Memories
 
-on:
-  push
+on: push
 
 jobs:
   build:
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-      run: xcodebuild -quiet -project Memories.xcodeproj -scheme Memories | xcpretty
+    - run: xcodebuild -quiet -project Memories.xcodeproj -scheme Memories | xcpretty
 
   unit_tests:
     needs: build
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-      run: xcodebuild -project Memories.xcodeproj -scheme Memories -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.0' test | xcpretty
+    - run: xcodebuild -project Memories.xcodeproj -scheme Memories -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.0' test | xcpretty
 
   ui_tests:
     needs: unit_tests
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v2
-      run: xcodebuild -project Memories.xcodeproj -scheme UITests -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.0' test | xcpretty
+    - run: xcodebuild -project Memories.xcodeproj -scheme UITests -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.0' test | xcpretty
