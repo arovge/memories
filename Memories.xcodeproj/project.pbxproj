@@ -75,7 +75,7 @@
 		EDA388272584258300C426D3 = {
 			isa = PBXGroup;
 			children = (
-				EDA388322584258300C426D3 /* memories */,
+				EDA388322584258300C426D3 /* Sources */,
 				EDA388442584258500C426D3 /* UnitTests */,
 				EDA3884F2584258600C426D3 /* UITests */,
 				EDA388312584258300C426D3 /* Products */,
@@ -92,7 +92,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EDA388322584258300C426D3 /* memories */ = {
+		EDA388322584258300C426D3 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				EDA388332584258300C426D3 /* memoriesApp.swift */,
@@ -101,7 +101,7 @@
 				EDA3883C2584258500C426D3 /* Info.plist */,
 				EDA388392584258500C426D3 /* Preview Content */,
 			);
-			path = memories;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		EDA388392584258500C426D3 /* Preview Content */ = {
