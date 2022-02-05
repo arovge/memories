@@ -1,7 +1,5 @@
 name: Memories
 
-on: push
-
 jobs:
   build:
     runs-on: macOS-latest
