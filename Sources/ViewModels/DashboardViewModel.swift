@@ -63,13 +63,15 @@ class DashboardViewModel: ObservableObject {
             }
         }
         
+        let result = self.requestedMedia.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
+            let components = Calendar.current.dateComponents([.year], from: media.createdDate)
+            guard let year = components.year else { return }
+            let newValue = acc[year, default: []] + [media]
+            acc[year] = newValue.sorted(by: { $0.createdWhen < $1.createdWhen })
+        }
+        
         DispatchQueue.main.async {
-            self.media = self.requestedMedia.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
-                let components = Calendar.current.dateComponents([.year], from: media.createdDate)
-                guard let year = components.year else { return }
-                let newValue = acc[year, default: []] + [media]
-                acc[year] = newValue.sorted(by: { $0.createdWhen < $1.createdWhen })
-            }
+            self.media = result
             self.loading = false
         }
     }
@@ -77,7 +79,7 @@ class DashboardViewModel: ObservableObject {
     func requestImage(for asset: PHAsset, with manager: PHImageManager) {
         manager.requestImage(
             for: asset,
-            targetSize: .init(width: 100, height: 100),
+            targetSize: .init(width: 1000, height: 1000),
             contentMode: .aspectFill,
             options: self.requestOptions,
             resultHandler: { image, info in
@@ -91,7 +93,17 @@ class DashboardViewModel: ObservableObject {
         layout = layout.next()
     }
     
-    func share() {
+    func viewMediaInPhotos() {
         
+    }
+    
+    func share(year: Int, media: MediaWrapper) {
+        let text = "My memory from \(year)"
+        let itemSource = ActivityItemSource(text: text, image: media.placeholderImage)
+        let activityController = UIActivityViewController(
+            activityItems: [media.placeholderImage, text, itemSource],
+            applicationActivities: nil
+        )
+        UIApplication.shared.windows.first?.rootViewController?.present(activityController, animated: true, completion: nil)
     }
 }

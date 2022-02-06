@@ -15,6 +15,7 @@
 		ED665A0725852A51001EF405 /* DispatchQueue+.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED665A0625852A51001EF405 /* DispatchQueue+.swift */; };
 		ED7C0D2B2586FD0000F3D30B /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C0D2A2586FD0000F3D30B /* MediaView.swift */; };
 		ED7C0D312587099300F3D30B /* MediaWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C0D302587099300F3D30B /* MediaWrapper.swift */; };
+		ED8211D127AF8366008389F6 /* ActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8211D027AF8366008389F6 /* ActivityItemSource.swift */; };
 		EDA388342584258300C426D3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388332584258300C426D3 /* RootView.swift */; };
 		EDA388382584258500C426D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA388372584258500C426D3 /* Assets.xcassets */; };
 		EDA388462584258600C426D3 /* memoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388452584258600C426D3 /* memoriesTests.swift */; };
@@ -51,6 +52,7 @@
 		ED665A0625852A51001EF405 /* DispatchQueue+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+.swift"; sourceTree = "<group>"; };
 		ED7C0D2A2586FD0000F3D30B /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 		ED7C0D302587099300F3D30B /* MediaWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaWrapper.swift; sourceTree = "<group>"; };
+		ED8211D027AF8366008389F6 /* ActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityItemSource.swift; sourceTree = "<group>"; };
 		EDA388302584258300C426D3 /* Memories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDA388332584258300C426D3 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		EDA388372584258500C426D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				ED6659E725843832001EF405 /* MemoriesView.swift */,
 				EDAA616A27AE4A1200445D68 /* MediaGridView.swift */,
 				ED7C0D2A2586FD0000F3D30B /* MediaView.swift */,
+				ED8211D027AF8366008389F6 /* ActivityItemSource.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				EDAA617027AE4ACA00445D68 /* PhotosService.swift in Sources */,
 				ED665A0725852A51001EF405 /* DispatchQueue+.swift in Sources */,
 				ED665A022584B1CE001EF405 /* Foundation+.swift in Sources */,
+				ED8211D127AF8366008389F6 /* ActivityItemSource.swift in Sources */,
 				EDA388342584258300C426D3 /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

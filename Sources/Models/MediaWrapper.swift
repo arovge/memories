@@ -22,7 +22,7 @@ struct MediaWrapper: Hashable {
     var isMemory: Bool {
         let today = Calendar.current.dateComponents([.month, .day], from: Date())
         let createdDate = Calendar.current.dateComponents([.month, .day], from: createdDate)
-        return today.month == createdDate.month && today.month == createdDate.month
+        return true || today.month == createdDate.month && today.month == createdDate.month
     }
     
     var createdWhen: String {

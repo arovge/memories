@@ -33,8 +33,7 @@ struct DashboardView: View {
     }
     
     var today: String {
-        let today = Date().toString(format: "MMMM d")
-        return "for \(today)"
+        Date().toString(format: "MMMM d")
     }
 }
 

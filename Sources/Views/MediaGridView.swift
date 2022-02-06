@@ -19,7 +19,14 @@ struct MediaGridView: View {
                     
                 LazyVGrid(columns: gridLayout, spacing: 10) {
                     ForEach(viewModel.media[viewModel.years[index]] ?? [], id: \.self) { item in
-                        NavigationLink(destination: MediaView(for: item, share: viewModel.share)) {
+                        NavigationLink(
+                            destination: MediaView(
+                                for: item,
+                                share: {
+                                    viewModel.share(year: viewModel.years[index], media: item)
+                                }
+                            )
+                        ) {
                             Image(uiImage: item.placeholderImage)
                                 .resizable()
                                 .scaledToFill()
@@ -28,7 +35,9 @@ struct MediaGridView: View {
                                 .cornerRadius(5)
                         }
                         .contextMenu {
-                            Button(action: viewModel.share) {
+                            Button {
+                                viewModel.share(year: viewModel.years[index], media: item)
+                            } label: {
                                 Label("Share", systemImage: "square.and.arrow.up")
                             }
                         }

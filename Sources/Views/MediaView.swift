@@ -21,7 +21,9 @@ struct MediaView: View {
             Spacer()
         }
         .contextMenu {
-            Button("Share", action: share)
+            Button(action: share) {
+                Label("Share", systemImage: "square.and.arrow.up")
+            }
         }
     }
     
