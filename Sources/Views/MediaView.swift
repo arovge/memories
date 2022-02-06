@@ -15,11 +15,9 @@ struct MediaView: View {
             Image(uiImage: media.placeholderImage)
                 .resizable()
                 .scaledToFit()
-            if let date = date {
-                Text(date)
-                    .foregroundColor(.secondaryLabel)
-                    .font(.callout)
-            }
+            Text(description)
+                .foregroundColor(.secondaryLabel)
+                .font(.callout)
             Spacer()
         }
         .contextMenu {
@@ -27,10 +25,7 @@ struct MediaView: View {
         }
     }
     
-    var date: String? {
-        if let formattedDate = media.formattedCreatedWhen {
-            return "Taken on \(formattedDate)"
-        }
-        return nil
+    var description: String {
+        "Taken on \(media.createdWhen)"
     }
 }

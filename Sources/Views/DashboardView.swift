@@ -13,7 +13,6 @@ struct DashboardView: View {
             }
         }
         .navigationBarTitle("Your memories")
-        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Text(today)
@@ -34,7 +33,7 @@ struct DashboardView: View {
     }
     
     var today: String {
-        let today = Date().toString(format: "MMMM d, yyyy")
+        let today = Date().toString(format: "MMMM d")
         return "for \(today)"
     }
 }

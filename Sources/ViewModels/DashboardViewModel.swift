@@ -2,7 +2,8 @@ import SwiftUI
 import PhotosUI
 
 class DashboardViewModel: ObservableObject {
-    @Published var media: [MediaWrapper] = []
+    @Published var media: [Int: [MediaWrapper]] = [:]
+    @Published var requestedMedia: [MediaWrapper] = []
     @Published var loading: Bool = true
     @Published var layout: ColumnLayout = .single
     @Published var error: Bool = false
@@ -14,6 +15,10 @@ class DashboardViewModel: ObservableObject {
     init() {
         requestOptions.isNetworkAccessAllowed = true
         requestOptions.isSynchronous = true
+    }
+    
+    var years: [Int] {
+        media.keys.sorted(by: >)
     }
     
     func handleAppear() {
@@ -58,7 +63,15 @@ class DashboardViewModel: ObservableObject {
             }
         }
         
-        DispatchQueue.main.async { self.loading = false }
+        DispatchQueue.main.async {
+            self.media = self.requestedMedia.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
+                let components = Calendar.current.dateComponents([.year], from: media.createdDate)
+                guard let year = components.year else { return }
+                let newValue = acc[year, default: []] + [media]
+                acc[year] = newValue.sorted(by: { $0.createdWhen < $1.createdWhen })
+            }
+            self.loading = false
+        }
     }
     
     func requestImage(for asset: PHAsset, with manager: PHImageManager) {
@@ -68,13 +81,8 @@ class DashboardViewModel: ObservableObject {
             contentMode: .aspectFill,
             options: self.requestOptions,
             resultHandler: { image, info in
-                if let image = image {
-                    let wrapper = MediaWrapper.image(image, asset)
-                    if wrapper.isMemory {
-                        DispatchQueue.main.async {
-                            self.media.append(wrapper)
-                        }
-                    }
+                if let image = image, let wrapper = MediaWrapper(image: image, asset: asset), wrapper.isMemory {
+                    DispatchQueue.main.async { self.requestedMedia.append(wrapper) }
                 }
             })
     }

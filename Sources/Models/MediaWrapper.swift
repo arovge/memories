@@ -1,39 +1,39 @@
 import UIKit
 import PhotosUI
 
+enum Media: Hashable {
+    case image(UIImage)
+    case video(UIImage)
+}
+
 // TODO: Support video
-enum MediaWrapper: Hashable {
-    case image(UIImage, PHAsset)
-    case video(UIImage, PHAsset)
+struct MediaWrapper: Hashable {
+    let media: Media
+    let asset: PHAsset
+    let createdDate: Date
     
-    var uuid: UUID { UUID() }
-    
+    init?(image: UIImage, asset: PHAsset) {
+        guard let creationDate = asset.creationDate else { return nil }
+        self.media = .image(image)
+        self.asset = asset
+        self.createdDate = creationDate
+    }
+        
     var isMemory: Bool {
-//        guard let createdWhen = createdWhen else { return false }
-//        let today = Calendar.current.dateComponents([.month, .day], from: Date())
-//        let createdDate = Calendar.current.dateComponents([.month, .day], from: createdWhen)
-//        return today.month == createdDate.month && today.month == createdDate.month
-        true
+        let today = Calendar.current.dateComponents([.month, .day], from: Date())
+        let createdDate = Calendar.current.dateComponents([.month, .day], from: createdDate)
+        return today.month == createdDate.month && today.month == createdDate.month
     }
     
-    var createdWhen: Date? {
-        switch self {
-        case .image(_, let asset):
-            return asset.creationDate
-        case .video(_, let asset):
-            return asset.creationDate
-        }
-    }
-    
-    var formattedCreatedWhen: String? {
-        createdWhen?.toString(format: "MMMM d, yyyy")
+    var createdWhen: String {
+        createdDate.toString(format: "MMMM d, yyyy")
     }
     
     var placeholderImage: UIImage {
-        switch self {
-        case .image(let image, _):
+        switch media {
+        case .image(let image):
             return image
-        case .video(let image, _):
+        case .video(let image):
             return image
         }
     }

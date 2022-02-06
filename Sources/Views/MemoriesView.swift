@@ -8,11 +8,11 @@ struct MemoriesView: View {
             if viewModel.media.isEmpty {
                 Text("No memories today")
                     .foregroundColor(.secondaryLabel)
-                    .font(.callout)
+                    .font(.headline)
                     .padding(.bottom)
                 Text("Take some more pictures for next year!")
                     .foregroundColor(.secondaryLabel)
-                    .font(.callout)
+                    .font(.headline)
             } else {
                 MediaGridView(viewModel: viewModel)
             }

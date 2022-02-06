@@ -97,8 +97,8 @@
 			children = (
 				ED6659CE258430C4001EF405 /* DashboardView.swift */,
 				ED6659E725843832001EF405 /* MemoriesView.swift */,
-				ED7C0D2A2586FD0000F3D30B /* MediaView.swift */,
 				EDAA616A27AE4A1200445D68 /* MediaGridView.swift */,
+				ED7C0D2A2586FD0000F3D30B /* MediaView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
