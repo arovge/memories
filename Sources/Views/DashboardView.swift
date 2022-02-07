@@ -7,7 +7,6 @@ struct DashboardView: View {
         VStack {
             if viewModel.loading {
                 ProgressView()
-                    .foregroundColor(.secondaryLabel)
             } else {
                 MemoriesView(viewModel: viewModel)
             }
@@ -20,15 +19,41 @@ struct DashboardView: View {
                     .font(.headline)
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    viewModel.toggleLayout()
-                } label: {
-                    Image(systemName: "square.grid.2x2")
-                }
+                menu
             }
+        }
+        .fullScreenCover(isPresented: $viewModel.showSettingsSheet) {
+            SettingsView()
         }
         .onAppear {
             viewModel.handleAppear()
+        }
+    }
+    
+    @ViewBuilder
+    var menu: some View {
+        Menu {
+            if viewModel.layout.nextZoomInLevel != nil {
+                Button {
+                    viewModel.layout.zoomIn()
+                } label: {
+                    Label("Zoom In", systemSymbol: .plusMagnifyingGlass)
+                }
+            }
+            if viewModel.layout.nextZoomOutLevel != nil {
+                Button {
+                    viewModel.layout.zoomOut()
+                } label: {
+                    Label("Zoom Out", systemSymbol: .minusMagnifyingGlass)
+                }
+            }
+            Button {
+                viewModel.showSettingsSheet = true
+            } label: {
+                Label("Settings", systemSymbol: .gearshape)
+            }
+        } label: {
+            Image(systemSymbol: .ellipsis)
         }
     }
 }

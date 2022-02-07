@@ -3,6 +3,7 @@ import SwiftUI
 class DashboardViewModel: ObservableObject {
     @Published var memorySections: [MemorySection] = []
     @Published var layout: ColumnLayout = .single
+    @Published var showSettingsSheet: Bool = false
     @Published var loading: Bool = true
     @Published var error: Bool = false
     @Published var hasPhotosAccess: Bool = false
@@ -65,6 +66,26 @@ class DashboardViewModel: ObservableObject {
     
     func viewMediaInPhotos() {
         
+    }
+    
+    func sendNotification() {
+        var date = DateComponents()
+        // 8am
+        date.hour = 8
+        date.minute = 0
+        let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
+        let request: UNNotificationRequest = .init(
+            identifier: "Shaba",
+            content: .init(),
+            trigger: trigger
+        )
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+            if let error = error {
+                self.logService.log(error)
+            } else {
+                self.logService.log(info: "Notification sent")
+            }
+        })
     }
     
     func share(year: Int, media: MediaWrapper) {

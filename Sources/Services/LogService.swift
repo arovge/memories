@@ -1,17 +1,17 @@
 class LogService {
-    func logInformation(_ info: String) {
+    func log(info: String) {
         print("INFO: \(info)")
     }
     
-    func logWarning(_ warning: String) {
+    func log(warning: String) {
         print("WARNING: \(warning)")
     }
     
-    func logError(_ error: String) {
+    func log(error: String) {
         print("ERROR: \(error)")
     }
     
-    func logError(_ error: Error) {
+    func log(_ error: Error) {
         print("ERROR: \(error)")
     }
 }

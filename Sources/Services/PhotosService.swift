@@ -33,7 +33,7 @@ class PhotosService {
             case .video:
                 self.requestVideo(for: asset, callback: addMedia)
             default:
-                self.logService.logInformation("Unknown media type: \(asset.mediaType)")
+                self.logService.log(info: "Unknown media type: \(asset.mediaType)")
             }
         }
     }
