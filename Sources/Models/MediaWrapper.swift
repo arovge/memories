@@ -3,7 +3,7 @@ import PhotosUI
 
 enum Media: Hashable {
     case image(UIImage)
-    case video(UIImage)
+    case video(AVPlayerItem)
 }
 
 // TODO: Support video
@@ -12,9 +12,9 @@ struct MediaWrapper: Hashable {
     let asset: PHAsset
     let createdDate: Date
     
-    init?(image: UIImage, asset: PHAsset) {
+    init?(media: Media, asset: PHAsset) {
         guard let creationDate = asset.creationDate else { return nil }
-        self.media = .image(image)
+        self.media = media
         self.asset = asset
         self.createdDate = creationDate
     }
@@ -22,7 +22,7 @@ struct MediaWrapper: Hashable {
     var isMemory: Bool {
         let today = Calendar.current.dateComponents([.month, .day], from: Date())
         let createdDate = Calendar.current.dateComponents([.month, .day], from: createdDate)
-        return true || today.month == createdDate.month && today.month == createdDate.month
+        return true// || today.month == createdDate.month && today.month == createdDate.month
     }
     
     var createdWhen: String {
@@ -33,8 +33,9 @@ struct MediaWrapper: Hashable {
         switch media {
         case .image(let image):
             return image
-        case .video(let image):
-            return image
+        case .video(let avPlayerItem):
+//            return avPlayerItem.ima
+            return UIImage()
         }
     }
 }

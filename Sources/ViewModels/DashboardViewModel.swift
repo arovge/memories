@@ -1,24 +1,18 @@
 import SwiftUI
-import PhotosUI
 
 class DashboardViewModel: ObservableObject {
-    @Published var media: [Int: [MediaWrapper]] = [:]
-    @Published var requestedMedia: [MediaWrapper] = []
-    @Published var loading: Bool = true
+    @Published var memorySections: [MemorySection] = []
     @Published var layout: ColumnLayout = .single
+    @Published var loading: Bool = true
     @Published var error: Bool = false
     @Published var hasPhotosAccess: Bool = false
+    private var requestedMedia: [MediaWrapper] = []
     private let photosService: PhotosService = PhotosService()
+    private let logService: LogService = LogService()
     private var started: Bool = false
-    private let requestOptions: PHImageRequestOptions = PHImageRequestOptions()
     
-    init() {
-        requestOptions.isNetworkAccessAllowed = true
-        requestOptions.isSynchronous = true
-    }
-    
-    var years: [Int] {
-        media.keys.sorted(by: >)
+    var currentMonthAndDay: String {
+        Date().toString(format: "MMMM d")
     }
     
     func handleAppear() {
@@ -38,55 +32,31 @@ class DashboardViewModel: ObservableObject {
     }
     
     func fetchPhotos() {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [
-            .init(key: "creationDate", ascending: false)
-        ]
-        fetchOptions.predicate = .init(
-            format: "mediaType == %d || mediaType == %d",
-            PHAssetMediaType.image.rawValue,
-            PHAssetMediaType.video.rawValue
-        )
-        
-        let manager = PHImageManager.default()
-        let fetchResult = PHAsset.fetchAssets(with: fetchOptions)
-        
-        fetchResult.enumerateObjects { asset, _, _ in
-            switch asset.mediaType {
-            case .image:
-                self.requestImage(for: asset, with: manager)
-            case .video:
-                // TODO: Store video. Need to see how the views can render them
-                print("video")
-            default:
-                print("unknown media type")
-            }
-        }
-        
-        let result = self.requestedMedia.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
-            let components = Calendar.current.dateComponents([.year], from: media.createdDate)
-            guard let year = components.year else { return }
-            let newValue = acc[year, default: []] + [media]
-            acc[year] = newValue.sorted(by: { $0.createdWhen < $1.createdWhen })
-        }
+        photosService.fetchMedia(addMedia: self.addMedia)
+        let sections = computeMemorySections()
         
         DispatchQueue.main.async {
-            self.media = result
+            self.memorySections = sections
             self.loading = false
         }
     }
     
-    func requestImage(for asset: PHAsset, with manager: PHImageManager) {
-        manager.requestImage(
-            for: asset,
-            targetSize: .init(width: 1000, height: 1000),
-            contentMode: .aspectFill,
-            options: self.requestOptions,
-            resultHandler: { image, info in
-                if let image = image, let wrapper = MediaWrapper(image: image, asset: asset), wrapper.isMemory {
-                    DispatchQueue.main.async { self.requestedMedia.append(wrapper) }
-                }
-            })
+    func computeMemorySections() -> [MemorySection] {
+        let mediaGroupedByYear = self.requestedMedia.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
+            let components = Calendar.current.dateComponents([.year], from: media.createdDate)
+            guard let year = components.year else { return }
+            acc[year, default: []].append(media)
+        }
+        
+        return mediaGroupedByYear
+            .map { key, values in
+                MemorySection(year: key, memories: values.sorted(by: { $0.createdDate > $1.createdDate }))
+            }
+            .sorted(by: { $0.year > $1.year })
+    }
+    
+    func addMedia(wrapper: MediaWrapper) {
+        DispatchQueue.main.async { self.requestedMedia.append(wrapper) }
     }
     
     func toggleLayout() {
@@ -98,7 +68,7 @@ class DashboardViewModel: ObservableObject {
     }
     
     func share(year: Int, media: MediaWrapper) {
-        let text = "My memory from \(year)"
+        let text = "My memory from \(currentMonthAndDay), \(year)"
         let itemSource = ActivityItemSource(text: text, image: media.placeholderImage)
         let activityController = UIActivityViewController(
             activityItems: [media.placeholderImage, text, itemSource],

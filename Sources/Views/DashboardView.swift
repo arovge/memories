@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @ObservedObject var viewModel: DashboardViewModel
+    @ObservedObject var viewModel = DashboardViewModel()
     
     var body: some View {
         VStack {
@@ -15,7 +15,7 @@ struct DashboardView: View {
         .navigationBarTitle("Your memories")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Text(today)
+                Text(viewModel.currentMonthAndDay)
                     .foregroundColor(.secondaryLabel)
                     .font(.headline)
             }
@@ -31,16 +31,12 @@ struct DashboardView: View {
             viewModel.handleAppear()
         }
     }
-    
-    var today: String {
-        Date().toString(format: "MMMM d")
-    }
 }
 
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DashboardView(viewModel: .init())
+            DashboardView()
         }
     }
 }

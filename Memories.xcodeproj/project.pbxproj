@@ -16,6 +16,8 @@
 		ED7C0D2B2586FD0000F3D30B /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C0D2A2586FD0000F3D30B /* MediaView.swift */; };
 		ED7C0D312587099300F3D30B /* MediaWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7C0D302587099300F3D30B /* MediaWrapper.swift */; };
 		ED8211D127AF8366008389F6 /* ActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8211D027AF8366008389F6 /* ActivityItemSource.swift */; };
+		ED8211D327B09852008389F6 /* MemorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8211D227B09852008389F6 /* MemorySection.swift */; };
+		ED8211D527B0A7A3008389F6 /* LogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8211D427B0A7A3008389F6 /* LogService.swift */; };
 		EDA388342584258300C426D3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388332584258300C426D3 /* RootView.swift */; };
 		EDA388382584258500C426D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA388372584258500C426D3 /* Assets.xcassets */; };
 		EDA388462584258600C426D3 /* memoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388452584258600C426D3 /* memoriesTests.swift */; };
@@ -53,6 +55,8 @@
 		ED7C0D2A2586FD0000F3D30B /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 		ED7C0D302587099300F3D30B /* MediaWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaWrapper.swift; sourceTree = "<group>"; };
 		ED8211D027AF8366008389F6 /* ActivityItemSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityItemSource.swift; sourceTree = "<group>"; };
+		ED8211D227B09852008389F6 /* MemorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySection.swift; sourceTree = "<group>"; };
+		ED8211D427B0A7A3008389F6 /* LogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogService.swift; sourceTree = "<group>"; };
 		EDA388302584258300C426D3 /* Memories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDA388332584258300C426D3 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		EDA388372584258500C426D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,6 +134,7 @@
 			children = (
 				ED7C0D302587099300F3D30B /* MediaWrapper.swift */,
 				EDAA616C27AE4A5500445D68 /* ColumnLayout.swift */,
+				ED8211D227B09852008389F6 /* MemorySection.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -191,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				EDAA616F27AE4ACA00445D68 /* PhotosService.swift */,
+				ED8211D427B0A7A3008389F6 /* LogService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -330,12 +336,14 @@
 				EDAA617227AE4CB800445D68 /* StandardLibrary+.swift in Sources */,
 				ED6659FA2584AF90001EF405 /* DashboardViewModel.swift in Sources */,
 				ED6659E825843832001EF405 /* MemoriesView.swift in Sources */,
+				ED8211D327B09852008389F6 /* MemorySection.swift in Sources */,
 				ED7C0D312587099300F3D30B /* MediaWrapper.swift in Sources */,
 				ED6659DD2584354F001EF405 /* SwiftUI+.swift in Sources */,
 				EDAA617027AE4ACA00445D68 /* PhotosService.swift in Sources */,
 				ED665A0725852A51001EF405 /* DispatchQueue+.swift in Sources */,
 				ED665A022584B1CE001EF405 /* Foundation+.swift in Sources */,
 				ED8211D127AF8366008389F6 /* ActivityItemSource.swift in Sources */,
+				ED8211D527B0A7A3008389F6 /* LogService.swift in Sources */,
 				EDA388342584258300C426D3 /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

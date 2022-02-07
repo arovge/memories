@@ -5,7 +5,7 @@ struct MemoriesView: View {
     
     var body: some View {
         VStack {
-            if viewModel.media.isEmpty {
+            if viewModel.memorySections.isEmpty {
                 Text("No memories today")
                     .foregroundColor(.secondaryLabel)
                     .font(.headline)

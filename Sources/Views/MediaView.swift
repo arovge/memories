@@ -15,15 +15,18 @@ struct MediaView: View {
             Image(uiImage: media.placeholderImage)
                 .resizable()
                 .scaledToFit()
+                .contextMenu {
+                    Button(action: share) {
+                        Label("Share", systemImage: "square.and.arrow.up")
+                    }
+                }
             Text(description)
                 .foregroundColor(.secondaryLabel)
                 .font(.callout)
+            Text(media.createdDate.toString(format: "y, MMM d, HH:mm:ss"))
+                .foregroundColor(.secondaryLabel)
+                .font(.callout)
             Spacer()
-        }
-        .contextMenu {
-            Button(action: share) {
-                Label("Share", systemImage: "square.and.arrow.up")
-            }
         }
     }
     

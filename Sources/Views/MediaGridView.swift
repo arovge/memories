@@ -4,30 +4,30 @@ struct MediaGridView: View {
     @ObservedObject var viewModel: DashboardViewModel
     
     var gridLayout: [GridItem] {
-        Array(repeating: .init(.flexible()), count: viewModel.layout.columnCount)
+        Array(repeating: .init(.flexible()), count: viewModel.layout.rawValue)
     }
     
     var body: some View {
         ScrollView {
-            ForEach(0 ..< viewModel.years.count) { index in
+            ForEach(viewModel.memorySections) { section in
                 HStack {
-                    Text(String(viewModel.years[index]))
+                    Text(String(section.year))
                         .foregroundColor(.secondaryLabel)
                         .font(.headline)
                     Spacer()
                 }
                     
                 LazyVGrid(columns: gridLayout, spacing: 10) {
-                    ForEach(viewModel.media[viewModel.years[index]] ?? [], id: \.self) { item in
+                    ForEach(section.memories, id: \.self) { memory in
                         NavigationLink(
                             destination: MediaView(
-                                for: item,
+                                for: memory,
                                 share: {
-                                    viewModel.share(year: viewModel.years[index], media: item)
+                                    viewModel.share(year: section.year, media: memory)
                                 }
                             )
                         ) {
-                            Image(uiImage: item.placeholderImage)
+                            Image(uiImage: memory.placeholderImage)
                                 .resizable()
                                 .scaledToFill()
                                 .frame(minWidth: 0, maxWidth: .infinity)
@@ -36,7 +36,7 @@ struct MediaGridView: View {
                         }
                         .contextMenu {
                             Button {
-                                viewModel.share(year: viewModel.years[index], media: item)
+                                viewModel.share(year: section.year, media: memory)
                             } label: {
                                 Label("Share", systemImage: "square.and.arrow.up")
                             }
