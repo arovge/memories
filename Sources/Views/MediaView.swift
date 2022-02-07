@@ -1,4 +1,5 @@
 import SwiftUI
+import AVKit
 
 struct MediaView: View {
     let media: MediaWrapper
@@ -11,26 +12,35 @@ struct MediaView: View {
     
     var body: some View {
         VStack {
-            Spacer()
-            Image(uiImage: media.placeholderImage)
-                .resizable()
-                .scaledToFit()
-                .contextMenu {
-                    Button(action: share) {
-                        Label("Share", systemImage: "square.and.arrow.up")
+            switch media.media {
+            case .image(let image):
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .contextMenu {
+                        shareButton
                     }
-                }
-            Text(description)
-                .foregroundColor(.secondaryLabel)
-                .font(.callout)
-            Text(media.createdDate.toString(format: "y, MMM d, HH:mm:ss"))
-                .foregroundColor(.secondaryLabel)
-                .font(.callout)
-            Spacer()
+            case .video(let playerItem):
+                MediaVideoView(playerItem: playerItem)
+                    .contextMenu {
+                        shareButton
+                    }
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(media.createdWhen)
+                    .font(.subheadline)
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                shareButton
+            }
         }
     }
     
-    var description: String {
-        "Taken on \(media.createdWhen)"
+    var shareButton: some View {
+        Button(action: share) {
+            Label("Share", systemSymbol: .squareAndArrowUp)
+        }
     }
 }

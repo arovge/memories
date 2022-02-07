@@ -4,6 +4,15 @@ import PhotosUI
 enum Media: Hashable {
     case image(UIImage)
     case video(AVPlayerItem)
+    
+    func get() -> Any {
+        switch self {
+        case .image(let image):
+            return image
+        case .video(let playerItem):
+            return playerItem
+        }
+    }
 }
 
 // TODO: Support video
@@ -26,16 +35,15 @@ struct MediaWrapper: Hashable {
     }
     
     var createdWhen: String {
-        createdDate.toString(format: "MMMM d, yyyy")
+        createdDate.toString(format: "MMMM d, yyyy h:mm a")
     }
     
     var placeholderImage: UIImage {
         switch media {
         case .image(let image):
             return image
-        case .video(let avPlayerItem):
-//            return avPlayerItem.ima
-            return UIImage()
+        case .video(let playerItem):
+            return UIImage(systemSymbol: .playFill) ?? UIImage()
         }
     }
 }
