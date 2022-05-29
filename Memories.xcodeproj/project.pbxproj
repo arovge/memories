@@ -24,8 +24,8 @@
 		ED8211DD27B0E665008389F6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8211DC27B0E665008389F6 /* NotificationService.swift */; };
 		EDA388342584258300C426D3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388332584258300C426D3 /* RootView.swift */; };
 		EDA388382584258500C426D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA388372584258500C426D3 /* Assets.xcassets */; };
-		EDA388462584258600C426D3 /* memoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388452584258600C426D3 /* memoriesTests.swift */; };
-		EDA388512584258600C426D3 /* memoriesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388502584258600C426D3 /* memoriesUITests.swift */; };
+		EDA388462584258600C426D3 /* MemoriesUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388452584258600C426D3 /* MemoriesUnitTests.swift */; };
+		EDA388512584258600C426D3 /* MemoriesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388502584258600C426D3 /* MemoriesUITests.swift */; };
 		EDAA616B27AE4A1200445D68 /* MediaGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAA616A27AE4A1200445D68 /* MediaGridView.swift */; };
 		EDAA616D27AE4A5500445D68 /* ColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAA616C27AE4A5500445D68 /* ColumnLayout.swift */; };
 		EDAA617027AE4ACA00445D68 /* PhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAA616F27AE4ACA00445D68 /* PhotosService.swift */; };
@@ -70,10 +70,10 @@
 		EDA388372584258500C426D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDA3883C2584258500C426D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDA388412584258500C426D3 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EDA388452584258600C426D3 /* memoriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memoriesTests.swift; sourceTree = "<group>"; };
+		EDA388452584258600C426D3 /* MemoriesUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriesUnitTests.swift; sourceTree = "<group>"; };
 		EDA388472584258600C426D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDA3884C2584258600C426D3 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EDA388502584258600C426D3 /* memoriesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memoriesUITests.swift; sourceTree = "<group>"; };
+		EDA388502584258600C426D3 /* MemoriesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriesUITests.swift; sourceTree = "<group>"; };
 		EDA388522584258600C426D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDAA616A27AE4A1200445D68 /* MediaGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaGridView.swift; sourceTree = "<group>"; };
 		EDAA616C27AE4A5500445D68 /* ColumnLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnLayout.swift; sourceTree = "<group>"; };
@@ -188,7 +188,7 @@
 		EDA388442584258500C426D3 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				EDA388452584258600C426D3 /* memoriesTests.swift */,
+				EDA388452584258600C426D3 /* MemoriesUnitTests.swift */,
 				EDA388472584258600C426D3 /* Info.plist */,
 			);
 			path = UnitTests;
@@ -197,7 +197,7 @@
 		EDA3884F2584258600C426D3 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
-				EDA388502584258600C426D3 /* memoriesUITests.swift */,
+				EDA388502584258600C426D3 /* MemoriesUITests.swift */,
 				EDA388522584258600C426D3 /* Info.plist */,
 			);
 			path = UITests;
@@ -368,7 +368,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDA388462584258600C426D3 /* memoriesTests.swift in Sources */,
+				EDA388462584258600C426D3 /* MemoriesUnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,7 +376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDA388512584258600C426D3 /* memoriesUITests.swift in Sources */,
+				EDA388512584258600C426D3 /* MemoriesUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,8 +517,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -529,6 +530,7 @@
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = rovge.memories;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -539,8 +541,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -551,6 +554,7 @@
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = rovge.memories;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
