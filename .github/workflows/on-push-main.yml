@@ -1,8 +1,8 @@
 name: Build
 on:
   push:
-    branches-ignore:
-      - '!main'
+    branches:
+      - 'main'
 
 jobs:
   build:
@@ -18,3 +18,10 @@ jobs:
     - uses: actions/checkout@v3
     - run: |
       set -o pipefail && xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -project Memories.xcodeproj -scheme Memories test | xcpretty
+  ui_tests:
+    needs: unit_tests
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: |
+      set -o pipefail && xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -project Memories.xcodeproj -scheme UITests test | xcpretty
