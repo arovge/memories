@@ -7,19 +7,15 @@ class DashboardViewModel: ObservableObject {
     @Published var loading: Bool = true
     @Published var error: Bool = false
     @Published var hasPhotosAccess: Bool = false
+    let currentMonthAndDay: String = Date().toString(format: "MMMM d")
     private var requestedMedia: [MediaWrapper] = []
     private let photosService: PhotosService = PhotosService()
     private let logService: LogService = LogService()
-    private var started: Bool = false
-    
-    var currentMonthAndDay: String {
-        Date().toString(format: "MMMM d")
-    }
+    private var loaded: Bool = false
     
     func handleAppear() {
-        // ensure that this is only done once
-        guard !started else { return }
-        started = true
+        if loaded { return }
+        loaded = true
         
         photosService.requestAccess { status in
             switch status {

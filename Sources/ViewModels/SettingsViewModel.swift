@@ -10,12 +10,11 @@ class SettingsViewModel: ObservableObject {
     private let photosService: PhotosService = PhotosService()
     private let notificactionService: NotificationService = NotificationService()
     private let logService: LogService = LogService()
-    private var started: Bool = false
+    private var loaded: Bool = false
     
     func handleAppear() {
-        // ensure that this is only done once
-        guard !started else { return }
-        started = true
+        if loaded { return }
+        loaded = true
         
         notificactionService.getNotificationAccessLevel { status in
             DispatchQueue.main.async {

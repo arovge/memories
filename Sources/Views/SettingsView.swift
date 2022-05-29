@@ -39,18 +39,18 @@ struct SettingsView: View {
             Section(header: Text("Notifications")) {
                 switch viewModel.notificationsAuthorizationStatus {
                 case .authorized, .ephemeral, .provisional:
-                        Toggle("Enabled", isOn: $viewModel.canSendDailyNotifications.animation())
-                        if viewModel.canSendDailyNotifications {
-                            DatePicker(
-                                "Time",
-                                selection: $viewModel.dailyNotificationSendTime,
-                                displayedComponents: .hourAndMinute
-                            )
-                        }
+                    Toggle("Enabled", isOn: $viewModel.canSendDailyNotifications.animation(.interactiveSpring()))
+                    if viewModel.canSendDailyNotifications {
+                        DatePicker(
+                            "Time",
+                            selection: $viewModel.dailyNotificationSendTime,
+                            displayedComponents: .hourAndMinute
+                        )
+                    }
                 case .notDetermined, .denied:
                     Text("Notifications are currently not enabled for this app. If you'd like to receive them, please enable them in settings.")
                 @unknown default:
-                    fatalError("Unknown notification status")
+                    EmptyView()
                 }
             }
         }
