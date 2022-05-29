@@ -7,7 +7,7 @@ struct MediaGridView: View {
         Array(repeating: .init(.flexible()), count: viewModel.layout.rawValue)
     }
     
-    var boy: some View {
+    var body: some View {
         ScrollView {
             ForEach(viewModel.memorySections) { section in
                 HStack {
