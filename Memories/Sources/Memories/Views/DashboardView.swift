@@ -1,9 +1,11 @@
 import SwiftUI
 
-struct DashboardView: View {
+public struct DashboardView: View {
     @ObservedObject var viewModel = DashboardViewModel()
     
-    var body: some View {
+    public init() {}
+    
+    public var body: some View {
         VStack {
             if viewModel.loading {
                 ProgressView()
