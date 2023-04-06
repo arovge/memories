@@ -20,7 +20,7 @@
                BlueprintIdentifier = "MemoriesTests"
                BuildableName = "MemoriesTests"
                BlueprintName = "MemoriesTests"
-               ReferencedContainer = "container:">
+               ReferencedContainer = "container:Memories">
             </BuildableReference>
          </TestableReference>
       </Testables>
