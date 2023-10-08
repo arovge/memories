@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 extension Date {
-    func toString(format: String) -> String {
+    public func toString(format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
         return formatter.string(from: self)

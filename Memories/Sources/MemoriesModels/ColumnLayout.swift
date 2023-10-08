@@ -1,12 +1,12 @@
 import SwiftUI
 
-enum ColumnLayout: Int, CaseIterable {
+public enum ColumnLayout: Int, CaseIterable {
     case single = 1
     case double = 2
     case triple = 3
     case quadruple = 4
     
-    var nextZoomInLevel: ColumnLayout? {
+    public var nextZoomInLevel: ColumnLayout? {
         switch self {
         case .single: return nil
         case .double: return .single
@@ -15,7 +15,7 @@ enum ColumnLayout: Int, CaseIterable {
         }
     }
     
-    var nextZoomOutLevel: ColumnLayout? {
+    public var nextZoomOutLevel: ColumnLayout? {
         switch self {
         case .single: return .double
         case .double: return .triple
@@ -24,7 +24,7 @@ enum ColumnLayout: Int, CaseIterable {
         }
     }
     
-    mutating func zoomOut() {
+    mutating public func zoomOut() {
         switch self {
         case .single: self = .double
         case .double: self = .triple
@@ -33,7 +33,7 @@ enum ColumnLayout: Int, CaseIterable {
         }
     }
     
-    mutating func zoomIn() {
+    mutating public func zoomIn() {
         switch self {
         case .double: self = .single
         case .triple: self = .double

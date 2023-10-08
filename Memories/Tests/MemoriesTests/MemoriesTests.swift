@@ -1,5 +1,5 @@
 import XCTest
-@testable import Memories
+@testable import UI
 
 final class MemoriesTests: XCTestCase {
     func testExample() throws {

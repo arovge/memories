@@ -1,5 +1,5 @@
 import SwiftUI
-import Memories
+import MemoriesUI
 
 @main
 struct RootView: App {

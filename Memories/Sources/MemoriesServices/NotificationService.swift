@@ -1,9 +1,11 @@
 import UIKit
 
-class NotificationService {
+public class NotificationService {
     private let logService: LogService = LogService()
     
-    func requestAccess() {
+    public init() {}
+    
+    public func requestAccess() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
                 self.logService.log(error)
@@ -13,13 +15,13 @@ class NotificationService {
         }
     }
     
-    func getNotificationAccessLevel(_ callback: @escaping (UNAuthorizationStatus) -> Void) {
+    public func getNotificationAccessLevel(_ callback: @escaping (UNAuthorizationStatus) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             callback(settings.authorizationStatus)
         }
     }
     
-    func updateNotificationRecurrence() {
+    public func updateNotificationRecurrence() {
         // TODO: Implement
     }
 }

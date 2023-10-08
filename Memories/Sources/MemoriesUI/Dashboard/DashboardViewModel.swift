@@ -1,4 +1,7 @@
 import SwiftUI
+import MemoriesModels
+import MemoriesServices
+import MemoriesUtility
 
 class DashboardViewModel: ObservableObject {
     @Published var memorySections: [MemorySection] = []

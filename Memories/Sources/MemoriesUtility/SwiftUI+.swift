@@ -4,7 +4,7 @@ extension Color {
     public static var secondaryLabel: Color { .init(.secondaryLabel) }
 }
 
-enum SystemSymbol: String {
+public enum SystemSymbol: String {
     case ellipsis = "ellipsis"
     case gearshape = "gearshape"
     case minusMagnifyingGlass = "minus.magnifyingglass"
@@ -14,19 +14,19 @@ enum SystemSymbol: String {
 }
 
 extension Label where Title == Text, Icon == Image {
-    init<S>(_ title: S, systemSymbol symbol: SystemSymbol) where S : StringProtocol {
+    public init<S>(_ title: S, systemSymbol symbol: SystemSymbol) where S: StringProtocol {
         self.init(title, systemImage: symbol.rawValue)
     }
 }
 
 extension Image {
-    init(systemSymbol symbol: SystemSymbol) {
+    public init(systemSymbol symbol: SystemSymbol) {
         self.init(systemName: symbol.rawValue)
     }
 }
 
 extension UIImage {
-    convenience init?(systemSymbol symbol: SystemSymbol) {
+    public convenience init?(systemSymbol symbol: SystemSymbol) {
         self.init(systemName: symbol.rawValue)
     }
 }

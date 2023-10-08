@@ -1,19 +1,20 @@
 import PhotosUI
+import MemoriesModels
 
-class PhotosService {
+public class PhotosService {
     private let logService: LogService = LogService()
     private let imageRequestOptions: PHImageRequestOptions = PHImageRequestOptions()
     
-    init() {
+    public init() {
         imageRequestOptions.isNetworkAccessAllowed = true
         imageRequestOptions.isSynchronous = true
     }
     
-    func requestAccess(_ callback: @escaping (_ status: PHAuthorizationStatus) -> Void) {
+    public func requestAccess(_ callback: @escaping (_ status: PHAuthorizationStatus) -> Void) {
         PHPhotoLibrary.requestAuthorization(for: .readWrite, handler: callback)
     }
     
-    func fetchMedia(addMedia: @escaping (_ wrapper: MediaWrapper) -> Void) {
+    public func fetchMedia(addMedia: @escaping (_ wrapper: MediaWrapper) -> Void) {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             .init(key: "creationDate", ascending: false)
@@ -38,7 +39,7 @@ class PhotosService {
         }
     }
     
-    func requestImage(for asset: PHAsset, callback: @escaping (_ wrapper: MediaWrapper) -> Void) {
+    public func requestImage(for asset: PHAsset, callback: @escaping (_ wrapper: MediaWrapper) -> Void) {
         PHCachingImageManager.default().requestImage(
             for: asset,
             targetSize: .init(width: 1000, height: 1000),
@@ -51,7 +52,7 @@ class PhotosService {
             })
     }
     
-    func requestVideo(for asset: PHAsset, callback: @escaping (_ wrapper: MediaWrapper) -> Void) {
+    public func requestVideo(for asset: PHAsset, callback: @escaping (_ wrapper: MediaWrapper) -> Void) {
         PHCachingImageManager.default().requestPlayerItem(
             forVideo: asset,
             options: nil,

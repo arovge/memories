@@ -1,4 +1,5 @@
 import SwiftUI
+import MemoriesServices
 
 class SettingsViewModel: ObservableObject {
     @Published var loading: Bool = true

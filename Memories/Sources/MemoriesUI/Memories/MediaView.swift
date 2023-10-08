@@ -1,5 +1,6 @@
 import SwiftUI
 import AVKit
+import MemoriesModels
 
 struct MediaView: View {
     let media: MediaWrapper
