@@ -37,7 +37,9 @@ let package = Package(
             dependencies: []),
         .target(
             name: "MemoriesModels",
-            dependencies: []),
+            dependencies: [
+                "MemoriesUtility"
+            ]),
         .testTarget(
             name: "MemoriesTests",
             dependencies: ["MemoriesUI"]),
