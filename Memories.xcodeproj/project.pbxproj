@@ -3,12 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		6544E0C729DE816300726D5A /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388332584258300C426D3 /* App.swift */; };
 		65F575012AD32E4000EAD1BA /* MemoriesUI in Frameworks */ = {isa = PBXBuildFile; productRef = 65F575002AD32E4000EAD1BA /* MemoriesUI */; };
+		65F575042AD336D600EAD1BA /* MemoriesUI in Frameworks */ = {isa = PBXBuildFile; productRef = 65F575032AD336D600EAD1BA /* MemoriesUI */; };
 		EDA388512584258600C426D3 /* MemoriesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA388502584258600C426D3 /* MemoriesUITests.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65F575012AD32E4000EAD1BA /* MemoriesUI in Frameworks */,
+				65F575042AD336D600EAD1BA /* MemoriesUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +126,7 @@
 			name = iOS;
 			packageProductDependencies = (
 				65F575002AD32E4000EAD1BA /* MemoriesUI */,
+				65F575032AD336D600EAD1BA /* MemoriesUI */,
 			);
 			productName = iOS;
 			productReference = 6544E09A29DE7F5600726D5A /* iOS.app */;
@@ -174,6 +177,9 @@
 				Base,
 			);
 			mainGroup = EDA388272584258300C426D3;
+			packageReferences = (
+				65F575022AD336D600EAD1BA /* XCLocalSwiftPackageReference "Memories" */,
+			);
 			productRefGroup = EDA388312584258300C426D3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -475,8 +481,19 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		65F575022AD336D600EAD1BA /* XCLocalSwiftPackageReference "Memories" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Memories;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		65F575002AD32E4000EAD1BA /* MemoriesUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MemoriesUI;
+		};
+		65F575032AD336D600EAD1BA /* MemoriesUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MemoriesUI;
 		};
