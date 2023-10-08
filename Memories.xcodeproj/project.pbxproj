@@ -73,19 +73,11 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		65F574FF2AD32E4000EAD1BA /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		EDA388272584258300C426D3 = {
 			isa = PBXGroup;
 			children = (
 				6544E09229DE7CB000726D5A /* App */,
 				6544E09129DE7C8800726D5A /* Memories */,
-				65F574FF2AD32E4000EAD1BA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
