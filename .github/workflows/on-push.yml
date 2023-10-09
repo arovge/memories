@@ -12,12 +12,8 @@ jobs:
       uses: actions/checkout@v3
     - name: Build
       run: |
-        xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -quiet -workspace Memories.xcworkspace -scheme iOS build | xcpretty
-        cd /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T
-        echo shaba1
-        ffile=$(ls -1 -t | head -1)
-        echo shaba2
-        cat $ffile
+        xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -quiet -workspace Memories.xcworkspace -scheme iOS -resultBundlePath ResultBundle.xcresult build | xcpretty
+        xcresultparser --output-format cli --failed-tests-only "ResultBundle.xcresult"
   unit_tests:
     needs: build
     runs-on: macOS-latest
