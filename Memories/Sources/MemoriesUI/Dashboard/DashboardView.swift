@@ -1,19 +1,23 @@
 import SwiftUI
 
 public struct DashboardView: View {
-    @ObservedObject var viewModel = DashboardViewModel()
+    @State var viewModel = DashboardViewModel()
+    @EnvironmentObject var navigator: Navigator
     
     public init() {}
     
     public var body: some View {
         VStack {
-            if viewModel.loading {
+            if !viewModel.hasPhotosAccess {
+                Text("You don't have photo access. Please allow")
+            } else if viewModel.loading {
                 ProgressView()
             } else {
                 MemoriesView(viewModel: viewModel)
             }
         }
         .navigationBarTitle("Your memories")
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Text(viewModel.currentMonthAndDay)
@@ -24,11 +28,8 @@ public struct DashboardView: View {
                 menu
             }
         }
-        .fullScreenCover(isPresented: $viewModel.showSettingsSheet) {
-            SettingsView()
-        }
-        .onAppear {
-            viewModel.handleAppear()
+        .task {
+            await viewModel.handleAppear()
         }
     }
     
@@ -50,7 +51,7 @@ public struct DashboardView: View {
                 }
             }
             Button {
-                viewModel.showSettingsSheet = true
+                navigator.push(.settings)
             } label: {
                 Label("Settings", systemSymbol: .gearshape)
             }

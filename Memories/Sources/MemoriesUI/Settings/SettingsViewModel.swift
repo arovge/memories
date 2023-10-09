@@ -1,28 +1,27 @@
 import SwiftUI
 import MemoriesServices
 
-class SettingsViewModel: ObservableObject {
-    @Published var loading: Bool = true
-    @Published var error: Bool = false
-    @Published var hasPhotosAccess: Bool = false
-    @Published var canSendDailyNotifications: Bool = false
-    @Published var dailyNotificationSendTime: Date = Date()
-    @Published var notificationsAuthorizationStatus: UNAuthorizationStatus = .notDetermined
+@Observable
+class SettingsViewModel {
+    var loading: Bool = true
+    var error: Bool = false
+    var hasPhotosAccess: Bool = false
+    var canSendDailyNotifications: Bool = false
+    var dailyNotificationSendTime: Date = Date()
+    var notificationsAuthorizationStatus: UNAuthorizationStatus = .notDetermined
+    
     private let photosService: PhotosService = PhotosService()
     private let notificactionService: NotificationService = NotificationService()
-    private let logService: LogService = LogService()
+    private let logger = Logger()
     private var loaded: Bool = false
     
-    func handleAppear() {
+    func handleAppear() async {
         if loaded { return }
         loaded = true
         
-        notificactionService.getNotificationAccessLevel { status in
-            DispatchQueue.main.async {
-                self.notificationsAuthorizationStatus = status
-                self.loading = false
-            }
-        }
+        let accessLevel = await notificactionService.getNotificationAccessLevel()
+        loading = false
+        // TODO: Do something with access level
     }
     
     func save() {

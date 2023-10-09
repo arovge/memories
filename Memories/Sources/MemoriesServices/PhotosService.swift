@@ -2,7 +2,7 @@ import PhotosUI
 import MemoriesModels
 
 public class PhotosService {
-    private let logService: LogService = LogService()
+    private let logger = Logger()
     private let imageRequestOptions: PHImageRequestOptions = PHImageRequestOptions()
     
     public init() {
@@ -10,11 +10,13 @@ public class PhotosService {
         imageRequestOptions.isSynchronous = true
     }
     
-    public func requestAccess(_ callback: @escaping (_ status: PHAuthorizationStatus) -> Void) {
-        PHPhotoLibrary.requestAuthorization(for: .readWrite, handler: callback)
+    public func requestAccess() async -> PHAuthorizationStatus {
+        // TOOD: Should this be read not readWrite?
+        await PHPhotoLibrary.requestAuthorization(for: .readWrite)
     }
     
     public func fetchMedia(addMedia: @escaping (_ wrapper: MediaWrapper) -> Void) {
+        print("fetching")
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             .init(key: "creationDate", ascending: false)
@@ -34,7 +36,7 @@ public class PhotosService {
             case .video:
                 self.requestVideo(for: asset, callback: addMedia)
             default:
-                self.logService.log(info: "Unknown media type: \(asset.mediaType)")
+                self.logger.info("Unknown media type: \(asset.mediaType)")
             }
         }
     }

@@ -3,42 +3,50 @@ import MemoriesModels
 import MemoriesServices
 import MemoriesUtility
 
-class DashboardViewModel: ObservableObject {
-    @Published var memorySections: [MemorySection] = []
-    @Published var layout: ColumnLayout = .single
-    @Published var showSettingsSheet: Bool = false
-    @Published var loading: Bool = true
-    @Published var error: Bool = false
-    @Published var hasPhotosAccess: Bool = false
-    let currentMonthAndDay: String = Date().toString(format: "MMMM d")
+@Observable
+class DashboardViewModel {
+    var memorySections: [MemorySection] = []
+    var layout: ColumnLayout = .single
+    var showSettingsSheet: Bool = false
+    var loading: Bool = true
+    var error: Bool = false
+    var hasPhotosAccess: Bool = false
+    
+    let currentMonthAndDay: String = Date
+        .now
+        .formatted(
+            .dateTime
+            .year(.defaultDigits)
+            .month(.abbreviated)
+            .day(.defaultDigits)
+        )
     private var requestedMedia: [MediaWrapper] = []
     private let photosService: PhotosService = PhotosService()
-    private let logService: LogService = LogService()
+    private let logger = Logger()
     private var loaded: Bool = false
     
-    func handleAppear() {
+    func handleAppear() async {
         if loaded { return }
         loaded = true
         
-        photosService.requestAccess { status in
-            switch status {
-            case .authorized:
-                DispatchQueue.main.async { self.hasPhotosAccess = true }
-                self.fetchPhotos()
-            default:
-                self.hasPhotosAccess = false
-            }
+        let result = await photosService.requestAccess()
+        print(result)
+        if result == .authorized {
+            hasPhotosAccess = true
+            fetchPhotos()
+        } else {
+            print("no access")
+            hasPhotosAccess = false
         }
     }
     
     func fetchPhotos() {
+        print("yo")
         photosService.fetchMedia(addMedia: self.addMedia)
         let sections = computeMemorySections()
         
-        DispatchQueue.main.async {
-            self.memorySections = sections
-            self.loading = false
-        }
+        memorySections = sections
+        loading = false
     }
     
     func computeMemorySections() -> [MemorySection] {
@@ -56,7 +64,7 @@ class DashboardViewModel: ObservableObject {
     }
     
     func addMedia(wrapper: MediaWrapper) {
-        DispatchQueue.main.async { self.requestedMedia.append(wrapper) }
+        self.requestedMedia.append(wrapper)
     }
     
     func toggleLayout() {
@@ -80,9 +88,9 @@ class DashboardViewModel: ObservableObject {
         )
         UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
             if let error = error {
-                self.logService.log(error)
+                self.logger.log(error)
             } else {
-                self.logService.log(info: "Notification sent")
+                self.logger.info("Notification sent")
             }
         })
     }

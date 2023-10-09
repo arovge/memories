@@ -2,34 +2,28 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel = SettingsViewModel()
+    @State var viewModel = SettingsViewModel()
     
     var body: some View {
-        NavigationView {
-            VStack {
-                if viewModel.loading {
-                    ProgressView()
-                } else {
-                    fields
-                }
+        VStack {
+            if viewModel.loading {
+                ProgressView()
+            } else {
+                fields
             }
-            .navigationTitle("Settings")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
-                    }
+        }
+        .navigationTitle("Settings")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Save") {
+                    viewModel.save()
+                    presentationMode.wrappedValue.dismiss()
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        viewModel.save()
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
+                .disabled(true) // TODO: Fix
             }
-            .onAppear {
-                viewModel.handleAppear()
-            }
+        }
+        .task {
+            await viewModel.handleAppear()
         }
     }
     

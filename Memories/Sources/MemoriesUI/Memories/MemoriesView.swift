@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MemoriesView: View {
-    @ObservedObject var viewModel: DashboardViewModel
+    @Bindable var viewModel: DashboardViewModel
     
     var body: some View {
         VStack {

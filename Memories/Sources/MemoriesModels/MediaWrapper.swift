@@ -36,7 +36,15 @@ public struct MediaWrapper: Hashable {
     }
     
     public var createdWhen: String {
-        createdDate.toString(format: "MMMM d, yyyy h:mm a")
+        createdDate
+            .formatted(
+                .dateTime
+                .year(.defaultDigits)
+                .month(.abbreviated)
+                .day(.defaultDigits)
+                .hour()
+                .minute()
+            )
     }
     
     public var placeholderImage: UIImage {
