@@ -11,12 +11,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
     - name: Build
-      run: pwd
-    - run: cd ./.github/scripts
-    - run: ls -al
-    - run: pwd
-    - run: chmod=+x ./build.sh
-    - run: ./build.sh
+      run: |
+        cd ./.github/scripts
+        ./build.sh
   unit_tests:
     needs: build
     runs-on: macOS-latest
@@ -26,5 +23,4 @@ jobs:
     - name: Unit tests
       run: |
         cd ./.github/scripts
-        chmod=+x ./unit_tests.sh
         ./unit_tests.sh
