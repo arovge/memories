@@ -12,19 +12,16 @@ class SettingsViewModel {
     
     private let photosService: PhotosService = PhotosService()
     private let notificactionService: NotificationService = NotificationService()
-    private let logService: LogService = LogService()
+    private let logger = Logger()
     private var loaded: Bool = false
     
-    func handleAppear() {
+    func handleAppear() async {
         if loaded { return }
         loaded = true
         
-        notificactionService.getNotificationAccessLevel { status in
-            DispatchQueue.main.async {
-                self.notificationsAuthorizationStatus = status
-                self.loading = false
-            }
-        }
+        let accessLevel = await notificactionService.getNotificationAccessLevel()
+        loading = false
+        // TODO: Do something with access level
     }
     
     func save() {

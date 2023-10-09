@@ -27,8 +27,8 @@ public struct DashboardView: View {
         .fullScreenCover(isPresented: $viewModel.showSettingsSheet) {
             SettingsView()
         }
-        .onAppear {
-            viewModel.handleAppear()
+        .task {
+            await viewModel.handleAppear()
         }
     }
     

@@ -1,19 +1,19 @@
-public class LogService {
+public class Logger {
     public init() {}
     
-    public func log(info: String) {
-        print("INFO: \(info)")
+    public func info(_ value: String) {
+        print("INFO: \(value)")
     }
     
-    public func log(warning: String) {
-        print("WARNING: \(warning)")
+    public func warning(_ value: String) {
+        print("WARNING: \(value)")
     }
     
-    public func log(error: String) {
-        print("ERROR: \(error)")
+    public func error(_ value: String) {
+        print("ERROR: \(value)")
     }
     
-    public func log(_ error: Error) {
+    public func log(_ error: any Error) {
         print("ERROR: \(error)")
     }
 }

@@ -14,7 +14,7 @@ class ActivityItemSource: NSObject, UIActivityItemSource {
     }
     
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
-        Bundle.main.icon as Any
+        nil as UIImage?
     }
     
     func activityViewController(

@@ -27,8 +27,8 @@ struct SettingsView: View {
                     }
                 }
             }
-            .onAppear {
-                viewModel.handleAppear()
+            .task {
+                await viewModel.handleAppear()
             }
         }
     }

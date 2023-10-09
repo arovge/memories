@@ -1,24 +1,26 @@
 import UIKit
 
 public class NotificationService {
-    private let logService: LogService = LogService()
+    private let logger = Logger()
     
     public init() {}
     
-    public func requestAccess() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if let error = error {
-                self.logService.log(error)
-            }
+    public func requestAccess() async throws {
+        do {
+            let hasNotificationAccess = try await UNUserNotificationCenter.current().requestAuthorization(
+                options: [.alert, .sound, .badge]
+            )
             
-            // TODO: Schedule recurring notification
+            // TODO: Schedule recurring notification if access
+            
+        } catch {
+            logger.log(error)
+            throw error
         }
     }
     
-    public func getNotificationAccessLevel(_ callback: @escaping (UNAuthorizationStatus) -> Void) {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            callback(settings.authorizationStatus)
-        }
+    public func getNotificationAccessLevel() async -> UNNotificationSettings {
+        await UNUserNotificationCenter.current().notificationSettings()
     }
     
     public func updateNotificationRecurrence() {

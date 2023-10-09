@@ -36,7 +36,8 @@ public struct MediaWrapper: Hashable {
     }
     
     public var createdWhen: String {
-        createdDate.toString(format: "MMMM d, yyyy h:mm a")
+        // TODO: Use new formatted API
+        createdDate.formatted("MMMM d, yyyy h:mm a")
     }
     
     public var placeholderImage: UIImage {

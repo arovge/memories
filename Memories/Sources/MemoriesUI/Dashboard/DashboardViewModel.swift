@@ -12,24 +12,24 @@ class DashboardViewModel {
     var error: Bool = false
     var hasPhotosAccess: Bool = false
     
-    let currentMonthAndDay: String = Date().toString(format: "MMMM d")
+    // TODO: use new formatted api
+    let currentMonthAndDay: String = Date().formatted("MMMM d")
     private var requestedMedia: [MediaWrapper] = []
     private let photosService: PhotosService = PhotosService()
-    private let logService: LogService = LogService()
+    private let logger = Logger()
     private var loaded: Bool = false
     
-    func handleAppear() {
+    func handleAppear() async {
         if loaded { return }
         loaded = true
         
-        photosService.requestAccess { status in
-            switch status {
-            case .authorized:
-                DispatchQueue.main.async { self.hasPhotosAccess = true }
-                self.fetchPhotos()
-            default:
-                self.hasPhotosAccess = false
-            }
+        let result = await photosService.requestAccess()
+        
+        if result == .authorized {
+            hasPhotosAccess = true
+            fetchPhotos()
+        } else {
+            hasPhotosAccess = false
         }
     }
     
@@ -37,10 +37,8 @@ class DashboardViewModel {
         photosService.fetchMedia(addMedia: self.addMedia)
         let sections = computeMemorySections()
         
-        DispatchQueue.main.async {
-            self.memorySections = sections
-            self.loading = false
-        }
+        memorySections = sections
+        loading = false
     }
     
     func computeMemorySections() -> [MemorySection] {
@@ -58,7 +56,7 @@ class DashboardViewModel {
     }
     
     func addMedia(wrapper: MediaWrapper) {
-        DispatchQueue.main.async { self.requestedMedia.append(wrapper) }
+        self.requestedMedia.append(wrapper)
     }
     
     func toggleLayout() {
@@ -82,9 +80,9 @@ class DashboardViewModel {
         )
         UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
             if let error = error {
-                self.logService.log(error)
+                self.logger.log(error)
             } else {
-                self.logService.log(info: "Notification sent")
+                self.logger.info("Notification sent")
             }
         })
     }
