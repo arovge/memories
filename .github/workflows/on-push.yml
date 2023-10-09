@@ -11,7 +11,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
     - name: Build
-    - run: cd ./.github/scripts
+      run: cd ./.github/scripts
     - run: chmod=+x ./build.sh
     - run: ./build.sh
   unit_tests:
