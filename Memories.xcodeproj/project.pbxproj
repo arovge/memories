@@ -16,6 +16,7 @@
 /* Begin PBXFileReference section */
 		6544E09129DE7C8800726D5A /* Memories */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Memories; sourceTree = "<group>"; };
 		6544E09A29DE7F5600726D5A /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65F575052AD38FE500EAD1BA /* iOS.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = iOS.xctestplan; path = ../iOS.xctestplan; sourceTree = "<group>"; };
 		EDA388332584258300C426D3 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		EDA388372584258500C426D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDA3883C2584258500C426D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,6 +77,7 @@
 		EDA388272584258300C426D3 = {
 			isa = PBXGroup;
 			children = (
+				65F575052AD38FE500EAD1BA /* iOS.xctestplan */,
 				6544E09229DE7CB000726D5A /* App */,
 				6544E09129DE7C8800726D5A /* Memories */,
 			);
