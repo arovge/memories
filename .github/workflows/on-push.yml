@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v3
     - name: Build
       run: |
-        set -o pipefail && xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -quiet -workspace Memories.xcworkspace -scheme iOS | xcpretty
+        set -o pipefail && xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -quiet -workspace Memories.xcworkspace -scheme iOS build | xcpretty
   unit_tests:
     needs: build
     runs-on: macOS-latest
