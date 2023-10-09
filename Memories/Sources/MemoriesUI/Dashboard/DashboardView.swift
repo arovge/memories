@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct DashboardView: View {
     @State var viewModel = DashboardViewModel()
+    @EnvironmentObject var navigator: Navigator
     
     public init() {}
     
@@ -16,6 +17,7 @@ public struct DashboardView: View {
             }
         }
         .navigationBarTitle("Your memories")
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Text(viewModel.currentMonthAndDay)
@@ -25,9 +27,6 @@ public struct DashboardView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 menu
             }
-        }
-        .fullScreenCover(isPresented: $viewModel.showSettingsSheet) {
-            SettingsView()
         }
         .task {
             await viewModel.handleAppear()
@@ -52,7 +51,7 @@ public struct DashboardView: View {
                 }
             }
             Button {
-                viewModel.showSettingsSheet = true
+                navigator.push(.settings)
             } label: {
                 Label("Settings", systemSymbol: .gearshape)
             }
