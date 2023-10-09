@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel = SettingsViewModel()
+    @State var viewModel = SettingsViewModel()
     
     var body: some View {
         NavigationView {

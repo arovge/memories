@@ -1,7 +1,7 @@
 import SwiftUI
 
 public struct DashboardView: View {
-    @ObservedObject var viewModel = DashboardViewModel()
+    @State var viewModel = DashboardViewModel()
     
     public init() {}
     

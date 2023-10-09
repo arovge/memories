@@ -3,13 +3,15 @@ import MemoriesModels
 import MemoriesServices
 import MemoriesUtility
 
-class DashboardViewModel: ObservableObject {
-    @Published var memorySections: [MemorySection] = []
-    @Published var layout: ColumnLayout = .single
-    @Published var showSettingsSheet: Bool = false
-    @Published var loading: Bool = true
-    @Published var error: Bool = false
-    @Published var hasPhotosAccess: Bool = false
+@Observable
+class DashboardViewModel {
+    var memorySections: [MemorySection] = []
+    var layout: ColumnLayout = .single
+    var showSettingsSheet: Bool = false
+    var loading: Bool = true
+    var error: Bool = false
+    var hasPhotosAccess: Bool = false
+    
     let currentMonthAndDay: String = Date().toString(format: "MMMM d")
     private var requestedMedia: [MediaWrapper] = []
     private let photosService: PhotosService = PhotosService()
