@@ -7,7 +7,9 @@ public struct DashboardView: View {
     
     public var body: some View {
         VStack {
-            if viewModel.loading {
+            if !viewModel.hasPhotosAccess {
+                Text("You don't have photo access. Please allow")
+            } else if viewModel.loading {
                 ProgressView()
             } else {
                 MemoriesView(viewModel: viewModel)

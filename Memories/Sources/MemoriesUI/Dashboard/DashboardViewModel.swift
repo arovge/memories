@@ -12,8 +12,14 @@ class DashboardViewModel {
     var error: Bool = false
     var hasPhotosAccess: Bool = false
     
-    // TODO: use new formatted api
-    let currentMonthAndDay: String = Date().formatted("MMMM d")
+    let currentMonthAndDay: String = Date
+        .now
+        .formatted(
+            .dateTime
+            .year(.defaultDigits)
+            .month(.abbreviated)
+            .day(.defaultDigits)
+        )
     private var requestedMedia: [MediaWrapper] = []
     private let photosService: PhotosService = PhotosService()
     private let logger = Logger()
@@ -24,16 +30,18 @@ class DashboardViewModel {
         loaded = true
         
         let result = await photosService.requestAccess()
-        
+        print(result)
         if result == .authorized {
             hasPhotosAccess = true
             fetchPhotos()
         } else {
+            print("no access")
             hasPhotosAccess = false
         }
     }
     
     func fetchPhotos() {
+        print("yo")
         photosService.fetchMedia(addMedia: self.addMedia)
         let sections = computeMemorySections()
         

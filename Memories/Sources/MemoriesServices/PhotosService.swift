@@ -16,6 +16,7 @@ public class PhotosService {
     }
     
     public func fetchMedia(addMedia: @escaping (_ wrapper: MediaWrapper) -> Void) {
+        print("fetching")
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [
             .init(key: "creationDate", ascending: false)
