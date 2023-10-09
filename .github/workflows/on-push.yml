@@ -12,7 +12,10 @@ jobs:
       uses: actions/checkout@v3
     - name: Build
       run: |
-        set -o pipefail && xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -quiet -workspace Memories.xcworkspace -scheme iOS build | xcpretty
+        xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -quiet -workspace Memories.xcworkspace -scheme iOS build | xcpretty
+        cd /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T
+        first=(*(N^/[1]))
+        cat $first
   unit_tests:
     needs: build
     runs-on: macOS-latest
