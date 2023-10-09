@@ -12,7 +12,8 @@ jobs:
       uses: actions/checkout@v3
     - name: Build
       run: |
-        set -o pipefail && xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -quiet -workspace Memories.xcworkspace -scheme iOS | xcpretty
+        cd ./.github/scripts
+        ./build.sh
   unit_tests:
     needs: build
     runs-on: macOS-latest
@@ -21,7 +22,8 @@ jobs:
       uses: actions/checkout@v3
     - name: Unit tests
       run: |
-        set -o pipefail && xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -workspace Memories.xcworkspace -scheme MemoriesTests -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.2' test | xcpretty
+        cd ./.github/scripts
+        ./unit_tests.sh
   ui_tests:
     needs: unit_tests
     runs-on: macOS-latest
@@ -30,4 +32,5 @@ jobs:
       uses: actions/checkout@v3
     - name: UI tests
       run: |
-        set -o pipefail && xcodebuild CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO" -workspace Memories.xcworkspace -scheme UITests -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.2' test | xcpretty
+        cd ./.github/scripts
+        ./ui_tests.sh
