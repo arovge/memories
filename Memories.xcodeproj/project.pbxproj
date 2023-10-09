@@ -49,7 +49,6 @@
 			isa = PBXGroup;
 			children = (
 				EDA388312584258300C426D3 /* Products */,
-				6544E0C429DE810E00726D5A /* Frameworks */,
 				6544E09329DE7E4F00726D5A /* iOS */,
 				EDA3884F2584258600C426D3 /* UITests */,
 			);
@@ -64,14 +63,6 @@
 				EDA388332584258300C426D3 /* App.swift */,
 			);
 			path = iOS;
-			sourceTree = "<group>";
-		};
-		6544E0C429DE810E00726D5A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		EDA388272584258300C426D3 = {
