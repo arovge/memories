@@ -13,6 +13,7 @@ jobs:
     - name: Build
       run: |
         cd ./.github/scripts
+        chmod=+x ./build.sh
         ./build.sh
   unit_tests:
     needs: build
@@ -23,4 +24,5 @@ jobs:
     - name: Unit tests
       run: |
         cd ./.github/scripts
+        chmod=+x ./unit_tests.sh
         ./unit_tests.sh
