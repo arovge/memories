@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.openURL) var openURL
     @State var viewModel = SettingsViewModel()
     
     var body: some View {
@@ -30,7 +31,7 @@ struct SettingsView: View {
     @ViewBuilder
     var fields: some View {
         Form {
-            Section(header: Text("Notifications")) {
+            Section("Notifications") {
                 switch viewModel.notificationsAuthorizationStatus {
                 case .authorized, .ephemeral, .provisional:
                     Toggle("Enabled", isOn: $viewModel.canSendDailyNotifications.animation(.interactiveSpring()))
@@ -45,6 +46,12 @@ struct SettingsView: View {
                     Text("Notifications are currently not enabled for this app. If you'd like to receive them, please enable them in settings.")
                 @unknown default:
                     EmptyView()
+                }
+            }
+            if viewModel.limitedPhotoAccess {
+                Text("This app currently has limited photos access. Consider granting it more access in settings to see more memories.")
+                Button("Settings") {
+                    openURL.callAsFunction(URL(string: UIApplication.openSettingsURLString)!)
                 }
             }
         }

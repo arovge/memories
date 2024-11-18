@@ -56,7 +56,7 @@ public struct MediaWrapper: Hashable {
         case .image(let image):
             return image
         case .video(let playerItem):
-            return UIImage(systemSymbol: .playFill) ?? UIImage()
+            return UIImage()//UIImage(systemSymbol: .playFill) ?? UIImage()
         }
     }
 }

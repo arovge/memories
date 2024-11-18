@@ -1,8 +1,10 @@
 import SwiftUI
 
 public struct DashboardView: View {
-    @State var viewModel = DashboardViewModel()
+    @Environment(\.scenePhase) var scenePhase
     @Environment(Navigator.self) var navigator
+    
+    @State var viewModel = DashboardViewModel()
     
     public init() {}
     
@@ -10,6 +12,8 @@ public struct DashboardView: View {
         VStack {
             if viewModel.loading {
                 ProgressView()
+            } else if !viewModel.hasPhotosAccess {
+                PhotosUnavailableView()
             } else {
                 MemoriesView()
                     .environment(viewModel)
@@ -32,6 +36,12 @@ public struct DashboardView: View {
         }
         .task {
             await viewModel.handleAppear()
+        }
+        .onChange(of: scenePhase) { oldValue, newValue in
+            guard oldValue != .active && newValue == .active else { return }
+            Task {
+                await viewModel.checkPhotosAccess()
+            }
         }
     }
     
@@ -63,10 +73,8 @@ public struct DashboardView: View {
     }
 }
 
-struct DashboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            DashboardView()
-        }
+#Preview {
+    NavigationView {
+        DashboardView()
     }
 }

@@ -6,13 +6,11 @@ struct MemoriesView: View {
     var body: some View {
         VStack {
             if viewModel.memorySections.isEmpty {
-                Text("No memories today")
-                    .foregroundColor(.secondaryLabel)
-                    .font(.headline)
-                    .padding(.bottom)
-                Text("Take some more pictures for next year!")
-                    .foregroundColor(.secondaryLabel)
-                    .font(.headline)
+                ContentUnavailableView(
+                    "No memories today",
+                    systemSymbol: .photoOnRectangleAngled,
+                    description: Text("Take some more pictures for next year!")
+                )
             } else {
                 MediaGridView()
                     .environment(viewModel)

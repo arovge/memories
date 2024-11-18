@@ -5,10 +5,11 @@ import MemoriesUtility
 
 @Observable
 class DashboardViewModel {
-    var memorySections: [MemorySection] = []
-    var layout: ColumnLayout = .single
-    var loading: Bool = true
-    var error: Bool = false
+    var memorySections = [MemorySection]()
+    var layout = ColumnLayout.single
+    var loading = true
+    var hasPhotosAccess = false
+    var error = false
     
     let currentMonthAndDay: String = Date
         .now
@@ -24,10 +25,34 @@ class DashboardViewModel {
     private var loaded: Bool = false
     
     func handleAppear(force: Bool = false) async {
+        defer { loading = false }
         if loaded || !force { return }
         loaded = true
         
+        await checkPhotosAccess()
+        
+        guard hasPhotosAccess else { return }
+        
         fetchPhotos()
+    }
+    
+    func checkPhotosAccess() async {
+        let result = await photosService.requestAccess()
+                
+        hasPhotosAccess = switch result {
+        case .notDetermined: // need to prompt here
+            false
+        case .restricted:
+            true
+        case .denied:
+            false
+        case .authorized:
+            true
+        case .limited:
+            true
+        @unknown default:
+            false
+        }
     }
     
     func fetchPhotos() {

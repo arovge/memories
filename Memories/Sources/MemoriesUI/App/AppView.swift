@@ -13,13 +13,10 @@ public struct AppView: View {
                 .navigationDestination(for: Route.self) { route in
                     renderRoute(for: route)
                 }
-                .task {
-                    await viewModel.handleAppear(navigator)
-                }
                 .onChange(of: scenePhase) { oldValue, newValue in
                     guard oldValue != .active && newValue == .active else { return }
                     Task {
-                        await viewModel.handleAppear(isFromSceneChange: true, navigator)
+                        await viewModel.handleAppear(navigator)
                     }
                 }
         }
@@ -28,9 +25,6 @@ public struct AppView: View {
     func renderRoute(for route: Route) -> some View {
         Group {
             switch route {
-            case .requestAccess:
-                RequestAccessView()
-                    .navigationBarBackButtonHidden()
             case .dashboard:
                 DashboardView()
                     .navigationBarBackButtonHidden()
