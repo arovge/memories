@@ -34,9 +34,11 @@ public class PhotosService {
         assets.enumerateObjects { asset, _, _ in
             switch asset.mediaType {
             case .image:
-                self.requestImage(for: asset, callback: addMedia)
+                break
+//                self.requestImage(for: asset, callback: addMedia)
             case .video:
-                self.requestVideo(for: asset, callback: addMedia)
+                break
+//                self.requestVideo(for: asset, callback: addMedia)
             default:
                 self.logger.info("Unknown media type: \(asset.mediaType)")
             }
@@ -50,7 +52,7 @@ public class PhotosService {
             contentMode: .aspectFill,
             options: self.imageRequestOptions
         )
-        return .init(media: .image(image), asset: asset)
+        return .init(media: .image(image), asset: asset)!
     }
     
     public func requestVideo(for asset: PHAsset) async -> Void {
@@ -60,7 +62,7 @@ public class PhotosService {
             resultHandler: { item, options in
                 guard let item = item else { return }
                 guard let wrapper = MediaWrapper(media: .video(item), asset: asset), wrapper.isMemory else { return }
-                callback(wrapper)
+//                callback(wrapper)
             })
     }
 }

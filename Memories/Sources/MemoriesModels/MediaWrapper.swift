@@ -18,7 +18,7 @@ public enum Media: Hashable {
 
 // TODO: Support video
 public struct MediaWrapper: Hashable {
-    private let media: Media
+    public let media: Media
     let asset: PHAsset
     public let createdDate: Date
     
