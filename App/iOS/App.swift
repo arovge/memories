@@ -5,9 +5,7 @@ import MemoriesUI
 struct RootView: App {
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                DashboardView()
-            }
+            AppView()
         }
     }
 }

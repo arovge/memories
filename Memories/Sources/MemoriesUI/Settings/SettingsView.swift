@@ -1,42 +1,37 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel = SettingsViewModel()
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.openURL) var openURL
+    @State var viewModel = SettingsViewModel()
     
     var body: some View {
-        NavigationView {
-            VStack {
-                if viewModel.loading {
-                    ProgressView()
-                } else {
-                    fields
-                }
+        VStack {
+            if viewModel.loading {
+                ProgressView()
+            } else {
+                fields
             }
-            .navigationTitle("Settings")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
-                    }
+        }
+        .navigationTitle("Settings")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Save") {
+                    viewModel.save()
+                    dismiss()
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        viewModel.save()
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
+                .disabled(true) // TODO: Fix
             }
-            .onAppear {
-                viewModel.handleAppear()
-            }
+        }
+        .task {
+            await viewModel.handleAppear()
         }
     }
     
     @ViewBuilder
     var fields: some View {
         Form {
-            Section(header: Text("Notifications")) {
+            Section("Notifications") {
                 switch viewModel.notificationsAuthorizationStatus {
                 case .authorized, .ephemeral, .provisional:
                     Toggle("Enabled", isOn: $viewModel.canSendDailyNotifications.animation(.interactiveSpring()))
@@ -51,6 +46,12 @@ struct SettingsView: View {
                     Text("Notifications are currently not enabled for this app. If you'd like to receive them, please enable them in settings.")
                 @unknown default:
                     EmptyView()
+                }
+            }
+            if viewModel.limitedPhotoAccess {
+                Text("This app currently has limited photos access. Consider granting it more access in settings to see more memories.")
+                Button("Settings") {
+                    openURL.callAsFunction(URL(string: UIApplication.openSettingsURLString)!)
                 }
             }
         }

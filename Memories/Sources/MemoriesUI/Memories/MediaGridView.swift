@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MediaGridView: View {
-    @ObservedObject var viewModel: DashboardViewModel
+    @Environment(DashboardViewModel.self) var viewModel
     
     var gridLayout: [GridItem] {
         Array(repeating: .init(.flexible()), count: viewModel.layout.rawValue)

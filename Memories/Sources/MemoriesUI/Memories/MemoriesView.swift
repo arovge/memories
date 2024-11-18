@@ -1,29 +1,27 @@
 import SwiftUI
 
 struct MemoriesView: View {
-    @ObservedObject var viewModel: DashboardViewModel
+    @Environment(DashboardViewModel.self) var viewModel
     
     var body: some View {
         VStack {
             if viewModel.memorySections.isEmpty {
-                Text("No memories today")
-                    .foregroundColor(.secondaryLabel)
-                    .font(.headline)
-                    .padding(.bottom)
-                Text("Take some more pictures for next year!")
-                    .foregroundColor(.secondaryLabel)
-                    .font(.headline)
+                ContentUnavailableView(
+                    "No memories today",
+                    systemSymbol: .photoOnRectangleAngled,
+                    description: Text("Take some more pictures for next year!")
+                )
             } else {
-                MediaGridView(viewModel: viewModel)
+                MediaGridView()
+                    .environment(viewModel)
             }
         }
     }
 }
 
-struct MemoriesView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            MemoriesView(viewModel: .init())
-        }
+#Preview {
+    NavigationView {
+        MemoriesView()
+            .environment(DashboardViewModel())
     }
 }

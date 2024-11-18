@@ -22,6 +22,10 @@ public struct MediaWrapper: Hashable {
     let asset: PHAsset
     public let createdDate: Date
     
+//    public init(image: Media, asset: PHAsset) {
+//        
+//    }
+    
     public init?(media: Media, asset: PHAsset) {
         guard let creationDate = asset.creationDate else { return nil }
         self.media = media
@@ -36,7 +40,15 @@ public struct MediaWrapper: Hashable {
     }
     
     public var createdWhen: String {
-        createdDate.toString(format: "MMMM d, yyyy h:mm a")
+        createdDate
+            .formatted(
+                .dateTime
+                .year(.defaultDigits)
+                .month(.abbreviated)
+                .day(.defaultDigits)
+                .hour()
+                .minute()
+            )
     }
     
     public var placeholderImage: UIImage {
@@ -44,7 +56,7 @@ public struct MediaWrapper: Hashable {
         case .image(let image):
             return image
         case .video(let playerItem):
-            return UIImage(systemSymbol: .playFill) ?? UIImage()
+            return UIImage()//UIImage(systemSymbol: .playFill) ?? UIImage()
         }
     }
 }

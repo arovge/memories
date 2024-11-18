@@ -1,7 +1,10 @@
 import SwiftUI
 
 public struct DashboardView: View {
-    @ObservedObject var viewModel = DashboardViewModel()
+    @Environment(\.scenePhase) var scenePhase
+    @Environment(Navigator.self) var navigator
+    
+    @State var viewModel = DashboardViewModel()
     
     public init() {}
     
@@ -9,11 +12,15 @@ public struct DashboardView: View {
         VStack {
             if viewModel.loading {
                 ProgressView()
+            } else if !viewModel.hasPhotosAccess {
+                PhotosUnavailableView()
             } else {
-                MemoriesView(viewModel: viewModel)
+                MemoriesView()
+                    .environment(viewModel)
             }
         }
         .navigationBarTitle("Your memories")
+        .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Text(viewModel.currentMonthAndDay)
@@ -24,11 +31,17 @@ public struct DashboardView: View {
                 menu
             }
         }
-        .fullScreenCover(isPresented: $viewModel.showSettingsSheet) {
-            SettingsView()
+        .refreshable {
+            await viewModel.handleAppear(force: true)
         }
-        .onAppear {
-            viewModel.handleAppear()
+        .task {
+            await viewModel.handleAppear()
+        }
+        .onChange(of: scenePhase) { oldValue, newValue in
+            guard oldValue != .active && newValue == .active else { return }
+            Task {
+                await viewModel.checkPhotosAccess()
+            }
         }
     }
     
@@ -50,7 +63,7 @@ public struct DashboardView: View {
                 }
             }
             Button {
-                viewModel.showSettingsSheet = true
+                navigator.push(.settings)
             } label: {
                 Label("Settings", systemSymbol: .gearshape)
             }
@@ -60,10 +73,8 @@ public struct DashboardView: View {
     }
 }
 
-struct DashboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            DashboardView()
-        }
+#Preview {
+    NavigationView {
+        DashboardView()
     }
 }
