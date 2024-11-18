@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct AppView: View {
+    @Environment(\.scenePhase) var scenePhase
     @State var viewModel = AppViewModel()
     @State var navigator = Navigator()
     
@@ -14,6 +15,12 @@ public struct AppView: View {
                 }
                 .task {
                     await viewModel.handleAppear(navigator)
+                }
+                .onChange(of: scenePhase) { oldValue, newValue in
+                    guard oldValue != .active && newValue == .active else { return }
+                    Task {
+                        await viewModel.handleAppear(isFromSceneChange: true, navigator)
+                    }
                 }
         }
     }
@@ -31,6 +38,6 @@ public struct AppView: View {
                 SettingsView()
             }
         }
-        .environmentObject(navigator)
+        .environment(navigator)
     }
 }

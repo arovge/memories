@@ -2,18 +2,17 @@ import SwiftUI
 
 public struct DashboardView: View {
     @State var viewModel = DashboardViewModel()
-    @EnvironmentObject var navigator: Navigator
+    @Environment(Navigator.self) var navigator
     
     public init() {}
     
     public var body: some View {
         VStack {
-            if !viewModel.hasPhotosAccess {
-                Text("You don't have photo access. Please allow")
-            } else if viewModel.loading {
+            if viewModel.loading {
                 ProgressView()
             } else {
-                MemoriesView(viewModel: viewModel)
+                MemoriesView()
+                    .environment(viewModel)
             }
         }
         .navigationBarTitle("Your memories")
@@ -27,6 +26,9 @@ public struct DashboardView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 menu
             }
+        }
+        .refreshable {
+            await viewModel.handleAppear(force: true)
         }
         .task {
             await viewModel.handleAppear()

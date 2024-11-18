@@ -1,5 +1,6 @@
 import PhotosUI
 import MemoriesModels
+import MemoriesUtility
 
 public class PhotosService {
     private let logger = Logger()
@@ -27,6 +28,7 @@ public class PhotosService {
             PHAssetMediaType.video.rawValue
         )
         
+        
         let assets = PHAsset.fetchAssets(with: fetchOptions)
         
         assets.enumerateObjects { asset, _, _ in
@@ -41,20 +43,17 @@ public class PhotosService {
         }
     }
     
-    public func requestImage(for asset: PHAsset, callback: @escaping (_ wrapper: MediaWrapper) -> Void) {
-        PHCachingImageManager.default().requestImage(
+    public func requestImage(for asset: PHAsset) async throws -> MediaWrapper {
+        let image = try await PHCachingImageManager.default().requestImage(
             for: asset,
             targetSize: .init(width: 1000, height: 1000),
             contentMode: .aspectFill,
-            options: self.imageRequestOptions,
-            resultHandler: { image, info in
-                guard let image = image else { return }
-                guard let wrapper = MediaWrapper(media: .image(image), asset: asset), wrapper.isMemory else { return }
-                callback(wrapper)
-            })
+            options: self.imageRequestOptions
+        )
+        return .init(media: .image(image), asset: asset)
     }
     
-    public func requestVideo(for asset: PHAsset, callback: @escaping (_ wrapper: MediaWrapper) -> Void) {
+    public func requestVideo(for asset: PHAsset) async -> Void {
         PHCachingImageManager.default().requestPlayerItem(
             forVideo: asset,
             options: nil,

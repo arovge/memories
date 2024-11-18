@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     @State var viewModel = SettingsViewModel()
     
     var body: some View {
@@ -17,7 +17,7 @@ struct SettingsView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Save") {
                     viewModel.save()
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }
                 .disabled(true) // TODO: Fix
             }

@@ -18,9 +18,13 @@ public enum Media: Hashable {
 
 // TODO: Support video
 public struct MediaWrapper: Hashable {
-    public let media: Media
+    private let media: Media
     let asset: PHAsset
     public let createdDate: Date
+    
+//    public init(image: Media, asset: PHAsset) {
+//        
+//    }
     
     public init?(media: Media, asset: PHAsset) {
         guard let creationDate = asset.creationDate else { return nil }

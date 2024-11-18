@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MemoriesView: View {
-    @Bindable var viewModel: DashboardViewModel
+    @Environment(DashboardViewModel.self) var viewModel
     
     var body: some View {
         VStack {
@@ -14,16 +14,16 @@ struct MemoriesView: View {
                     .foregroundColor(.secondaryLabel)
                     .font(.headline)
             } else {
-                MediaGridView(viewModel: viewModel)
+                MediaGridView()
+                    .environment(viewModel)
             }
         }
     }
 }
 
-struct MemoriesView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            MemoriesView(viewModel: .init())
-        }
+#Preview {
+    NavigationView {
+        MemoriesView()
+            .environment(DashboardViewModel())
     }
 }

@@ -4,4 +4,34 @@
    <FileRef
       location = "container:/Users/ajr/code/memories/Memories.xcodeproj">
    </FileRef>
+   <Group
+      location = "group:App"
+      name = "App">
+      <Group
+         location = "group:UITests"
+         name = "UITests">
+         <FileRef
+            location = "group:MemoriesUITests.swift">
+         </FileRef>
+         <FileRef
+            location = "group:Info.plist">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:iOS"
+         name = "iOS">
+         <FileRef
+            location = "group:Assets.xcassets">
+         </FileRef>
+         <FileRef
+            location = "group:App.swift">
+         </FileRef>
+         <FileRef
+            location = "group:Info.plist">
+         </FileRef>
+      </Group>
+   </Group>
+   <FileRef
+      location = "group:Memories">
+   </FileRef>
 </Workspace>

@@ -7,10 +7,8 @@ import MemoriesUtility
 class DashboardViewModel {
     var memorySections: [MemorySection] = []
     var layout: ColumnLayout = .single
-    var showSettingsSheet: Bool = false
     var loading: Bool = true
     var error: Bool = false
-    var hasPhotosAccess: Bool = false
     
     let currentMonthAndDay: String = Date
         .now
@@ -25,19 +23,11 @@ class DashboardViewModel {
     private let logger = Logger()
     private var loaded: Bool = false
     
-    func handleAppear() async {
-        if loaded { return }
+    func handleAppear(force: Bool = false) async {
+        if loaded || !force { return }
         loaded = true
         
-        let result = await photosService.requestAccess()
-        print(result)
-        if result == .authorized {
-            hasPhotosAccess = true
-            fetchPhotos()
-        } else {
-            print("no access")
-            hasPhotosAccess = false
-        }
+        fetchPhotos()
     }
     
     func fetchPhotos() {

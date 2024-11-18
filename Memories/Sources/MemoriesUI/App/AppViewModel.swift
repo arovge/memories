@@ -9,8 +9,8 @@ class AppViewModel {
     var hasPhotosAccess = false
     var loading = true
     
-    func handleAppear(_ navigator: Navigator) async {
-        guard !loaded else { return }
+    func handleAppear(isFromSceneChange: Bool = false, _ navigator: Navigator) async {
+        guard !loaded || isFromSceneChange else { return }
         loaded = true
         
         let result = await photosService.requestAccess()
