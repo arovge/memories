@@ -91,9 +91,17 @@ class DashboardViewModel {
             .sorted(by: { $0.year > $1.year })
     }
     
-    func getImage(_ asset: PHAsset) async -> UIImage? {
+    func getImage(
+        _ asset: PHAsset,
+        targetSize: CGSize?,
+        contentMode: PHImageContentMode = .default
+    ) async -> UIImage? {
         do {
-            return try await photosService.getImage(id: asset.localIdentifier)
+            return try await photosService.getImage(
+                id: asset.localIdentifier,
+                targetSize: targetSize ?? PHImageManagerMaximumSize,
+                contentMode: contentMode
+            )
         } catch {
             logger.log(error)
             return nil

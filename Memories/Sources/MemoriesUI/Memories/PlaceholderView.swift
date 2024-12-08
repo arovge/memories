@@ -20,6 +20,7 @@ struct PlaceholderView: View {
             if let image {
                 ImageViewer(for: media, preview: image)
                     .navigationTransition(.zoom(sourceID: "image", in: animation))
+                    .environment(viewModel)
             }
         } label: {
             VStack {
@@ -37,13 +38,12 @@ struct PlaceholderView: View {
                 }
             }
             .task {
-                image = await viewModel.getImage(media.asset)
+                guard image == nil else { return }
+                image = await viewModel.getImage(
+                    media.asset,
+                    targetSize: CGSize(width: 200, height: 200)
+                )
                 loading = false
-            }
-            .contextMenu {
-                if let image {
-                    MemoryShareLink(media, image)
-                }
             }
         }
         .disabled(image == nil)

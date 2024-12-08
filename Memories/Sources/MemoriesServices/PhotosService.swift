@@ -37,8 +37,8 @@ public class PhotosService {
     
     public func getImage(
         id: String,
-        targetSize: CGSize = PHImageManagerMaximumSize,
-        contentMode: PHImageContentMode = .default
+        targetSize: CGSize,
+        contentMode: PHImageContentMode
     ) async throws -> UIImage? {
         let results = PHAsset.fetchAssets(
             withLocalIdentifiers: [id],
