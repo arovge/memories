@@ -29,17 +29,11 @@ let package = Package(
         .target(
             name: "MemoriesServices",
             dependencies: [
-                "MemoriesUtility",
                 "MemoriesModels"
             ]),
         .target(
-            name: "MemoriesUtility",
-            dependencies: []),
-        .target(
             name: "MemoriesModels",
-            dependencies: [
-                "MemoriesUtility"
-            ]),
+            dependencies: []),
         .testTarget(
             name: "MemoriesTests",
             dependencies: ["MemoriesUI"]),

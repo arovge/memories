@@ -1,6 +1,5 @@
 import UIKit
 import PhotosUI
-import MemoriesUtility
 
 public enum Media: Hashable {
     case image(UIImage)

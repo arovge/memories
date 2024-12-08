@@ -1,6 +1,5 @@
 import PhotosUI
 import MemoriesModels
-import MemoriesUtility
 
 public class PhotosService {
     private let logger = Logger()
@@ -65,25 +64,6 @@ public class PhotosService {
             )
         }
     }
-    
-//    public func requestImage(for asset: PHAsset) async throws -> MediaWrapper? {
-//        try await withCheckedThrowingContinuation { continuation in
-//            PHCachingImageManager().requestImage(
-//                for: asset,
-//                targetSize: .init(width: 1000, height: 1000),
-//                contentMode: .aspectFill,
-//                options: imageRequestOptions,
-//                resultHandler: { image, options in
-//                    if let image {
-//                        continuation.resume(
-//                            returning: MediaWrapper(media: .image(image), asset: asset)
-//                        )
-//                    }
-//                    continuation.resume(throwing: PhotosError.unknown)
-//                }
-//            )
-//        }
-//    }
     
 //    public func requestVideo(for asset: PHAsset) async throws -> MediaWrapper? {
 //        try await withCheckedThrowingContinuation { continuation in
