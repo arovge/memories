@@ -29,5 +29,6 @@ struct MediaGridView: View {
                 PlaceholderView(for: memory, gridLayout: gridLayout)
             }
         }
+        .padding(.bottom)
     }
 }

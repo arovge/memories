@@ -18,7 +18,7 @@ struct PlaceholderView: View {
     var body: some View {
         NavigationLink {
             if let image {
-                FullScreenMemoryView(for: media, preview: image)
+                ImageViewer(for: media, preview: image)
                     .navigationTransition(.zoom(sourceID: "image", in: animation))
             }
         } label: {

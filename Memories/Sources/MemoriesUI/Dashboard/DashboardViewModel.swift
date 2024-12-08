@@ -5,7 +5,7 @@ import Photos
 
 @Observable
 class DashboardViewModel {
-    var layout = ColumnLayout.single
+    var layout = ColumnLayout.triple
     var loading = true
     var hasPhotosAccess = false
     var error = false
@@ -106,10 +106,6 @@ class DashboardViewModel {
         case .triple: .quadruple
         case .quadruple: .single
         }
-    }
-    
-    func viewMediaInPhotos() {
-        
     }
     
     func sendNotification() async {
