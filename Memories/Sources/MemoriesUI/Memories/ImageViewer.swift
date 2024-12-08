@@ -4,10 +4,10 @@ import MemoriesModels
 struct ImageViewer: View {
     @Environment(DashboardViewModel.self) var viewModel
     @State var fullImage: UIImage?
-    let media: MediaWrapper
+    let media: MediaItem
     let preview: UIImage
     
-    init(for media: MediaWrapper, preview: UIImage) {
+    init(for media: MediaItem, preview: UIImage) {
         self.media = media
         self.preview = preview
     }

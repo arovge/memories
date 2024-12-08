@@ -9,9 +9,9 @@ class DashboardViewModel {
     var loading = true
     var hasPhotosAccess = false
     var error = false
-    var memorySections = [MemorySection]()
+    var mediaSections = [MediaSection]()
     
-    let currentMonthAndDay: String = Date
+    let currentMonthAndDay = Date
         .now
         .formatted(
             .dateTime
@@ -26,7 +26,7 @@ class DashboardViewModel {
     private var loaded = false
     
     var hasMemories: Bool {
-        !memorySections.isEmpty
+        !mediaSections.isEmpty
     }
     
     func handleAppear(force: Bool = false) async {
@@ -35,11 +35,10 @@ class DashboardViewModel {
         defer { loading = false }
         
         await checkPhotosAccess()
-        
         guard hasPhotosAccess else { return }
         
         assets = photosService.getAssets()
-        memorySections = computeMemorySections()
+        mediaSections = groupMedia()
     }
     
     func checkPhotosAccess() async {
@@ -62,16 +61,16 @@ class DashboardViewModel {
         }
     }
     
-    func computeMemorySections() -> [MemorySection] {
-        var media = [MediaWrapper]()
+    func groupMedia() -> [MediaSection] {
+        var media = [MediaItem]()
         
         assets.enumerateObjects { asset, _, _ in
-            let wrapper = MediaWrapper(asset: asset)
-            guard let wrapper, wrapper.isMemory else { return }
-            media.append(wrapper)
+            let item = MediaItem(from: asset)
+            guard let item, item.isMemory else { return }
+            media.append(item)
         }
         
-        let mediaGroupedByYear = media.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
+        let mediaGroupedByYear = media.reduce(into: [:] as [Int: [MediaItem]]) { acc, media in
             let components = Calendar.current.dateComponents([.year], from: media.createdDate)
             guard let year = components.year else { return }
             acc[year, default: []].append(media)
@@ -79,7 +78,7 @@ class DashboardViewModel {
         
         return mediaGroupedByYear
             .map { key, values in
-                MemorySection(
+                MediaSection(
                     year: key,
                     media: values.sorted(by: { $0.createdDate > $1.createdDate })
                 )

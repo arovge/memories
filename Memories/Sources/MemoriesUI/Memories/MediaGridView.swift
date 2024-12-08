@@ -9,8 +9,8 @@ struct MediaGridView: View {
     }
     
     var body: some View {
-        ForEach(viewModel.memorySections) { section in
-            renderSection(section)
+        ForEach(viewModel.mediaSections) { section in
+            render(section)
         }
         .padding(.vertical, 10)
         .padding(.horizontal, 20)
@@ -18,7 +18,7 @@ struct MediaGridView: View {
     }
     
     @ViewBuilder
-    func renderSection(_ section: MemorySection) -> some View {
+    func render(_ section: MediaSection) -> some View {
         Text(String(section.year))
             .foregroundColor(.secondary)
             .font(.headline)
