@@ -5,12 +5,10 @@ struct FullScreenMemoryView: View {
     @State var loading = true
     @State var image: UIImage
     let media: MediaWrapper
-    let share: () -> Void
     
-    init(for media: MediaWrapper, preview: UIImage, share: @escaping () -> Void) {
+    init(for media: MediaWrapper, preview: UIImage) {
         self.media = media
         self._image = State(initialValue: preview)
-        self.share = share
     }
     
     var body: some View {
@@ -40,23 +38,13 @@ struct FullScreenMemoryView: View {
             loading = false
         }
         .toolbar {
-            if let createdWhen = media.createdWhen {
-                ToolbarItem(placement: .principal) {
-                    Text(createdWhen)
-                        .font(.subheadline)
-                }
+            ToolbarItem(placement: .principal) {
+                Text(media.createdWhen)
+                    .font(.subheadline)
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                shareButton
+                MemoryShareLink(media, image)
             }
-        }
-    }
-    
-    var shareButton: some View {
-        Button {
-            share()
-        } label: {
-            Label("Share", systemSymbol: .squareAndArrowUp)
         }
     }
 }

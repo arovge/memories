@@ -18,10 +18,8 @@ struct PlaceholderView: View {
     var body: some View {
         NavigationLink {
             if let image {
-                FullScreenMemoryView(for: media, preview: image) {
-                    viewModel.share(year: 0, media: media)
-                }
-                .navigationTransition(.zoom(sourceID: "image", in: animation))
+                FullScreenMemoryView(for: media, preview: image)
+                    .navigationTransition(.zoom(sourceID: "image", in: animation))
             }
         } label: {
             VStack {
@@ -41,6 +39,11 @@ struct PlaceholderView: View {
             .task {
                 image = await viewModel.getImage(media.asset)
                 loading = false
+            }
+            .contextMenu {
+                if let image {
+                    MemoryShareLink(media, image)
+                }
             }
         }
         .disabled(image == nil)

@@ -35,7 +35,7 @@ public struct MediaWrapper: Hashable {
             && today.day == createdDateMonthDay.day
     }
     
-    public var createdWhen: String? {
+    public var createdWhen: String {
         createdDate.formatted(
             .dateTime
             .year(.defaultDigits)

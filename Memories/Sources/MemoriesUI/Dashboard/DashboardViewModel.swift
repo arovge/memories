@@ -129,14 +129,4 @@ class DashboardViewModel {
             logger.log(error)
         }
     }
-    
-    func share(year: Int, media: MediaWrapper) {
-//        let text = "My memory from \(currentMonthAndDay), \(year)"
-//        let itemSource = ActivityItemSource(text: text, image: media.placeholderImage)
-//        let activityController = UIActivityViewController(
-//            activityItems: [media.placeholderImage, text, itemSource],
-//            applicationActivities: nil
-//        )
-//        UIApplication.shared.windows.first?.rootViewController?.present(activityController, animated: true, completion: nil)
-    }
 }
