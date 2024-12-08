@@ -1,30 +1,12 @@
-import UIKit
 import PhotosUI
 
-public enum Media: Hashable {
-    case image(UIImage)
-    case video(AVPlayerItem)
-    
-    func get() -> Any {
-        switch self {
-        case .image(let image):
-            return image
-        case .video(let playerItem):
-            return playerItem
-        }
-    }
-}
-
-// TODO: Support video
 public struct MediaWrapper: Hashable {
-//    public let media: Media
     public let asset: PHAsset
     public let createdDate: Date
     
     public init?(asset: PHAsset) {
         guard let createdDate = asset.creationDate else { return nil }
         self.createdDate = createdDate
-//        self.media = media
         self.asset = asset
     }
         
@@ -45,15 +27,6 @@ public struct MediaWrapper: Hashable {
             .minute()
         )
     }
-    
-//    public var placeholderImage: UIImage {
-//        switch media {
-//        case .image(let image):
-//            return image
-//        case .video(let playerItem):
-//            return UIImage()//UIImage(systemSymbol: .playFill) ?? UIImage()
-//        }
-//    }
 }
 
 extension MediaWrapper: Identifiable {

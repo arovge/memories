@@ -71,6 +71,7 @@ class DashboardViewModel {
             guard let wrapper = MediaWrapper(asset: asset) else {
                 return
             }
+            // guard wrapper.isMemory else { return }
             media.append(wrapper)
         }
         
@@ -96,15 +97,6 @@ class DashboardViewModel {
         } catch {
             logger.log(error)
             return nil
-        }
-    }
-    
-    func toggleLayout() {
-        layout = switch layout {
-        case .single: .double
-        case .double: .triple
-        case .triple: .quadruple
-        case .quadruple: .single
         }
     }
     
