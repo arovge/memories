@@ -66,12 +66,12 @@ class DashboardViewModel {
         var media = [MediaWrapper]()
         
         assets.enumerateObjects { asset, _, _ in
-            // Only worrying about image support for now
+            // FUTURE: Remove this check when the app supports videos
             guard asset.mediaType == .image else { return }
             guard let wrapper = MediaWrapper(asset: asset) else {
                 return
             }
-            // guard wrapper.isMemory else { return }
+            guard wrapper.isMemory else { return }
             media.append(wrapper)
         }
         

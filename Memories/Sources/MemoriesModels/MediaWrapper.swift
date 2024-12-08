@@ -9,12 +9,13 @@ public struct MediaWrapper: Hashable {
         self.createdDate = createdDate
         self.asset = asset
     }
-        
+
     public var isMemory: Bool {
-        let today = Calendar.current.dateComponents([.month, .day], from: Date())
-        let createdDateMonthDay = Calendar.current.dateComponents([.month, .day], from: createdDate)
-        return today.month == createdDateMonthDay.month
-            && today.day == createdDateMonthDay.day
+        let today = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        let createdDate = Calendar.current.dateComponents([.year, .month, .day], from: createdDate)
+        return today.month == createdDate.month
+            && today.day == createdDate.day
+            && today.year != createdDate.year
     }
     
     public var createdWhen: String {
