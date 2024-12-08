@@ -1,10 +1,10 @@
 import PhotosUI
 
-public struct MediaWrapper: Hashable {
+public struct MediaItem: Hashable {
     public let asset: PHAsset
     public let createdDate: Date
     
-    public init?(asset: PHAsset) {
+    public init?(from asset: PHAsset) {
         guard let createdDate = asset.creationDate else { return nil }
         self.createdDate = createdDate
         self.asset = asset
@@ -13,9 +13,9 @@ public struct MediaWrapper: Hashable {
     public var isMemory: Bool {
         let today = Calendar.current.dateComponents([.year, .month, .day], from: Date())
         let createdDate = Calendar.current.dateComponents([.year, .month, .day], from: createdDate)
-        return today.month == createdDate.month
+        return today.year != createdDate.year
+            && today.month == createdDate.month
             && today.day == createdDate.day
-            && today.year != createdDate.year
     }
     
     public var createdWhen: String {
@@ -30,6 +30,6 @@ public struct MediaWrapper: Hashable {
     }
 }
 
-extension MediaWrapper: Identifiable {
+extension MediaItem: Identifiable {
     public var id: String { asset.localIdentifier }
 }

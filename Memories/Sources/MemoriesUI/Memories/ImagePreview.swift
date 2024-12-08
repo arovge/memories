@@ -2,31 +2,37 @@ import SwiftUI
 import AVKit
 import MemoriesModels
 
-struct PlaceholderView: View {
+struct ImagePreview: View {
     @Namespace var animation
     @Environment(DashboardViewModel.self) var viewModel
     @State var loading = true
-    @State var image = UIImage?.none
-    let media: MediaWrapper
+    @State var preview = UIImage?.none
+    let media: MediaItem
     let gridLayout: [GridItem]
     
-    init(for media: MediaWrapper, gridLayout: [GridItem]) {
+    init(for media: MediaItem, gridLayout: [GridItem]) {
         self.media = media
         self.gridLayout = gridLayout
     }
     
     var body: some View {
         NavigationLink {
-            if let image {
-                ImageViewer(for: media, preview: image)
-                    .navigationTransition(.zoom(sourceID: "image", in: animation))
-                    .environment(viewModel)
+            if let preview {
+                if media.asset.mediaType == .video {
+                    VideoViewer(for: media, preview: preview)
+                        .navigationTransition(.zoom(sourceID: "image", in: animation))
+                        .environment(viewModel)
+                } else {
+                    ImageViewer(for: media, preview: preview)
+                        .navigationTransition(.zoom(sourceID: "image", in: animation))
+                        .environment(viewModel)
+                }
             }
         } label: {
             VStack {
                 // TOOD: Handle error loading state
-                if let image {
-                    Image(uiImage: image)
+                if let preview {
+                    Image(uiImage: preview)
                         .resizable()
                         .scaledToFill()
                         .frame(minWidth: 0, maxWidth: .infinity)
@@ -38,14 +44,19 @@ struct PlaceholderView: View {
                 }
             }
             .task {
-                guard image == nil else { return }
-                image = await viewModel.getImage(
+                guard preview == nil else { return }
+                preview = await viewModel.getImage(
                     media.asset,
                     targetSize: CGSize(width: 200, height: 200)
                 )
                 loading = false
             }
+            .overlay {
+                if media.asset.mediaType == .video {
+                    Image(systemSymbol: .playFill)
+                }
+            }
         }
-        .disabled(image == nil)
+        .disabled(preview == nil)
     }
 }
