@@ -1,7 +1,7 @@
 import SwiftUI
 
 @Observable
-class Navigator: ObservableObject {
+class Navigator {
     var path = [Route.dashboard]
     
     func push(_ route: Route) {

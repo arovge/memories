@@ -29,9 +29,9 @@ class DashboardViewModel {
     }
     
     func handleAppear(force: Bool = false) async {
-        defer { loading = false }
-        if loaded || !force { return }
+        guard !loaded || force || !hasPhotosAccess else { return }
         loaded = true
+        defer { loading = false }
         
         await checkPhotosAccess()
         

@@ -19,7 +19,7 @@ public struct DashboardView: View {
                 ProgressView()
             } else if !viewModel.hasPhotosAccess {
                 NoPhotosAccessView()
-            } else if viewModel.memorySections.isEmpty {
+            } else if !viewModel.hasMemories {
                 ContentUnavailableView(
                     "No memories today",
                     systemSymbol: .photoOnRectangleAngled,
@@ -46,7 +46,7 @@ public struct DashboardView: View {
         .onChange(of: scenePhase) { oldValue, newValue in
             guard oldValue != .active && newValue == .active else { return }
             Task {
-                await viewModel.checkPhotosAccess()
+                await viewModel.handleAppear(force: true)
             }
         }
     }
