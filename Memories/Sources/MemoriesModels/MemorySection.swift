@@ -1,10 +1,12 @@
+import Photos
+
 public struct MemorySection {
     public let year: Int
-    public let memories: [MediaWrapper]
+    public let media: [MediaWrapper]
     
-    public init(year: Int, memories: [MediaWrapper]) {
+    public init(year: Int, media: [MediaWrapper]) {
         self.year = year
-        self.memories = memories
+        self.media = media
     }
 }
 

@@ -13,20 +13,21 @@ struct MediaView: View {
     
     var body: some View {
         VStack {
-            switch media.media {
-            case .image(let image):
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .contextMenu {
-                        shareButton
-                    }
-            case .video(let playerItem):
-                MediaVideoView(playerItem: playerItem)
-                    .contextMenu {
-                        shareButton
-                    }
-            }
+            Image(systemSymbol: .photo)
+//            switch media.asset {
+//            case .image(let image):
+//                Image(uiImage: image)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .contextMenu {
+//                        shareButton
+//                    }
+//            case .video(let playerItem):
+//                MediaVideoView(playerItem: playerItem)
+//                    .contextMenu {
+//                        shareButton
+//                    }
+//            }
         }
         .toolbar {
             if let createdWhen = media.createdWhen {

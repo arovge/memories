@@ -1,6 +1,6 @@
 import SwiftUI
 
-public enum ColumnLayout: Int, CaseIterable {
+public enum ColumnLayout: Int {
     case single = 1
     case double = 2
     case triple = 3

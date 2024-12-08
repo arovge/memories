@@ -1,5 +1,10 @@
 import SwiftUI
 
+enum Route {
+    case dashboard
+    case settings
+}
+
 @Observable
 class Navigator {
     var path = [Route.dashboard]

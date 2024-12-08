@@ -2,6 +2,7 @@ import SwiftUI
 import MemoriesModels
 import MemoriesServices
 import MemoriesUtility
+import Photos
 
 @Observable
 class DashboardViewModel {
@@ -19,13 +20,14 @@ class DashboardViewModel {
             .month(.abbreviated)
             .day(.defaultDigits)
         )
-    private var requestedMedia: [MediaWrapper] = []
-    private let photosService: PhotosService = PhotosService()
+    
+    private var assets = PHFetchResult<PHAsset>()
+    private let photosService = PhotosService()
     private let logger = Logger()
-    private var loaded: Bool = false
+    private var loaded = false
     
     var hasMemories: Bool {
-        requestedMedia.contains { $0.isMemory }
+        !memorySections.isEmpty
     }
     
     func handleAppear(force: Bool = false) async {
@@ -37,7 +39,7 @@ class DashboardViewModel {
         
         guard hasPhotosAccess else { return }
         
-        fetchPhotos()
+        getAssets()
     }
     
     func checkPhotosAccess() async {
@@ -59,8 +61,9 @@ class DashboardViewModel {
         }
     }
     
-    func fetchPhotos() {
-        print("yo")
+    func getAssets() {
+        assets = photosService.getAssets()
+        
 //        photosService.fetchMedia(addMedia: self.addMedia)
         let sections = computeMemorySections()
         
@@ -68,8 +71,25 @@ class DashboardViewModel {
         loading = false
     }
     
+    func getImage() async throws -> UIImage? {
+        nil
+    }
+    
     func computeMemorySections() -> [MemorySection] {
-        let mediaGroupedByYear = self.requestedMedia.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
+        var media = [MediaWrapper]()
+        
+        assets.enumerateObjects { asset, _, _ in
+            guard let creationDate = asset.creationDate else { return }
+            
+            // Only worrying about image support for now
+            guard asset.mediaType == .image else { return }
+            guard let wrapper = MediaWrapper(asset: asset) else {
+                return
+            }
+            media.append(wrapper)
+        }
+        
+        let mediaGroupedByYear = media.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
             let components = Calendar.current.dateComponents([.year], from: media.createdDate)
             guard let year = components.year else { return }
             acc[year, default: []].append(media)
@@ -77,17 +97,21 @@ class DashboardViewModel {
         
         return mediaGroupedByYear
             .map { key, values in
-                MemorySection(year: key, memories: values.sorted(by: { $0.createdDate > $1.createdDate }))
+                MemorySection(
+                    year: key,
+                    media: values.sorted(by: { $0.createdDate > $1.createdDate })
+                )
             }
             .sorted(by: { $0.year > $1.year })
     }
     
-    func addMedia(wrapper: MediaWrapper) {
-        self.requestedMedia.append(wrapper)
-    }
-    
     func toggleLayout() {
-        layout = layout.next()
+        layout = switch layout {
+        case .single: .double
+        case .double: .triple
+        case .triple: .quadruple
+        case .quadruple: .single
+        }
     }
     
     func viewMediaInPhotos() {

@@ -18,14 +18,14 @@ public enum Media: Hashable {
 
 // TODO: Support video
 public struct MediaWrapper: Hashable {
-    public let media: Media
-    let asset: PHAsset
+//    public let media: Media
+    public let asset: PHAsset
     public let createdDate: Date
     
-    public init?(media: Media, asset: PHAsset) {
+    public init?(asset: PHAsset) {
         guard let createdDate = asset.creationDate else { return nil }
         self.createdDate = createdDate
-        self.media = media
+//        self.media = media
         self.asset = asset
     }
         
@@ -47,12 +47,12 @@ public struct MediaWrapper: Hashable {
         )
     }
     
-    public var placeholderImage: UIImage {
-        switch media {
-        case .image(let image):
-            return image
-        case .video(let playerItem):
-            return UIImage()//UIImage(systemSymbol: .playFill) ?? UIImage()
-        }
-    }
+//    public var placeholderImage: UIImage {
+//        switch media {
+//        case .image(let image):
+//            return image
+//        case .video(let playerItem):
+//            return UIImage()//UIImage(systemSymbol: .playFill) ?? UIImage()
+//        }
+//    }
 }
