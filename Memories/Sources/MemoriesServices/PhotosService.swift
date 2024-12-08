@@ -53,9 +53,10 @@ public class PhotosService {
                 resultHandler: { image, info in
                     if let image {
                         continuation.resume(returning: image)
+                    } else {
+                        let error = info?[PHImageErrorKey] as? Error
+                        continuation.resume(throwing: PhotosError.loading(error))
                     }
-                    let error = info?[PHImageErrorKey] as? Error
-                    continuation.resume(throwing: PhotosError.loading(error))
                 }
             )
         }
@@ -69,9 +70,10 @@ public class PhotosService {
                 resultHandler: { playerItem, info in
                     if let playerItem {
                         continuation.resume(returning: playerItem)
+                    } else {
+                        let error = info?[PHImageErrorKey] as? Error
+                        continuation.resume(throwing: PhotosError.loading(error))
                     }
-                    let error = info?[PHImageErrorKey] as? Error
-                    continuation.resume(throwing: PhotosError.loading(error))
                 })
         }
     }
