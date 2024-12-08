@@ -9,30 +9,36 @@ public struct DashboardView: View {
     public init() {}
     
     public var body: some View {
-        VStack {
+        ScrollView {
+            MediaGridView()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .scrollDisabled(viewModel.loading || !viewModel.hasPhotosAccess || !viewModel.hasMemories)
+        .overlay {
             if viewModel.loading {
                 ProgressView()
             } else if !viewModel.hasPhotosAccess {
-                PhotosUnavailableView()
-            } else {
-                MemoriesView()
-                    .environment(viewModel)
+                NoPhotosAccessView()
+            } else if viewModel.memorySections.isEmpty {
+                ContentUnavailableView(
+                    "No memories today",
+                    systemSymbol: .photoOnRectangleAngled,
+                    description: Text("Take some more pictures for next year!")
+                )
             }
         }
+        .environment(viewModel)
         .navigationBarTitle("Your memories")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .topBarLeading) {
                 Text(viewModel.currentMonthAndDay)
-                    .foregroundColor(.secondaryLabel)
+                    .foregroundStyle(.secondary)
                     .font(.headline)
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                menu
+            ToolbarItem(placement: .topBarTrailing) {
+                trailing()
             }
-        }
-        .refreshable {
-            await viewModel.handleAppear(force: true)
         }
         .task {
             await viewModel.handleAppear()
@@ -46,29 +52,37 @@ public struct DashboardView: View {
     }
     
     @ViewBuilder
-    var menu: some View {
-        Menu {
-            if viewModel.layout.nextZoomInLevel != nil {
-                Button {
-                    viewModel.layout.zoomIn()
-                } label: {
-                    Label("Zoom In", systemSymbol: .plusMagnifyingGlass)
+    func trailing() -> some View {
+        if viewModel.hasPhotosAccess && viewModel.hasMemories {
+            Menu {
+                if viewModel.layout.nextZoomInLevel != nil {
+                    Button {
+                        viewModel.layout.zoomIn()
+                    } label: {
+                        Label("Zoom In", systemSymbol: .plusMagnifyingGlass)
+                    }
                 }
-            }
-            if viewModel.layout.nextZoomOutLevel != nil {
-                Button {
-                    viewModel.layout.zoomOut()
-                } label: {
-                    Label("Zoom Out", systemSymbol: .minusMagnifyingGlass)
+                if viewModel.layout.nextZoomOutLevel != nil {
+                    Button {
+                        viewModel.layout.zoomOut()
+                    } label: {
+                        Label("Zoom Out", systemSymbol: .minusMagnifyingGlass)
+                    }
                 }
-            }
-            Button {
-                navigator.push(.settings)
+                settingsButton()
             } label: {
-                Label("Settings", systemSymbol: .gearshape)
+                Image(systemSymbol: .ellipsis)
             }
+        } else {
+            settingsButton()
+        }
+    }
+    
+    func settingsButton() -> some View {
+        Button {
+            navigator.push(.settings)
         } label: {
-            Image(systemSymbol: .ellipsis)
+            Label("Settings", systemSymbol: .gearshape)
         }
     }
 }

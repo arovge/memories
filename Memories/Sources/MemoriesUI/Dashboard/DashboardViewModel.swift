@@ -24,6 +24,10 @@ class DashboardViewModel {
     private let logger = Logger()
     private var loaded: Bool = false
     
+    var hasMemories: Bool {
+        requestedMedia.contains { $0.isMemory }
+    }
+    
     func handleAppear(force: Bool = false) async {
         defer { loading = false }
         if loaded || !force { return }
@@ -57,7 +61,7 @@ class DashboardViewModel {
     
     func fetchPhotos() {
         print("yo")
-        photosService.fetchMedia(addMedia: self.addMedia)
+//        photosService.fetchMedia(addMedia: self.addMedia)
         let sections = computeMemorySections()
         
         memorySections = sections
@@ -111,12 +115,12 @@ class DashboardViewModel {
     }
     
     func share(year: Int, media: MediaWrapper) {
-        let text = "My memory from \(currentMonthAndDay), \(year)"
-        let itemSource = ActivityItemSource(text: text, image: media.placeholderImage)
-        let activityController = UIActivityViewController(
-            activityItems: [media.placeholderImage, text, itemSource],
-            applicationActivities: nil
-        )
-        UIApplication.shared.windows.first?.rootViewController?.present(activityController, animated: true, completion: nil)
+//        let text = "My memory from \(currentMonthAndDay), \(year)"
+//        let itemSource = ActivityItemSource(text: text, image: media.placeholderImage)
+//        let activityController = UIActivityViewController(
+//            activityItems: [media.placeholderImage, text, itemSource],
+//            applicationActivities: nil
+//        )
+//        UIApplication.shared.windows.first?.rootViewController?.present(activityController, animated: true, completion: nil)
     }
 }

@@ -43,5 +43,6 @@ let package = Package(
         .testTarget(
             name: "MemoriesTests",
             dependencies: ["MemoriesUI"]),
-    ]
+    ],
+    swiftLanguageModes: [.v5]
 )

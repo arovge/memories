@@ -29,9 +29,11 @@ struct MediaView: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(media.createdWhen)
-                    .font(.subheadline)
+            if let createdWhen = media.createdWhen {
+                ToolbarItem(placement: .principal) {
+                    Text(createdWhen)
+                        .font(.subheadline)
+                }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 shareButton

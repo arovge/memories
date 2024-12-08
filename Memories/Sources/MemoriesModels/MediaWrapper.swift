@@ -22,33 +22,29 @@ public struct MediaWrapper: Hashable {
     let asset: PHAsset
     public let createdDate: Date
     
-//    public init(image: Media, asset: PHAsset) {
-//        
-//    }
-    
     public init?(media: Media, asset: PHAsset) {
-        guard let creationDate = asset.creationDate else { return nil }
+        guard let createdDate = asset.creationDate else { return nil }
+        self.createdDate = createdDate
         self.media = media
         self.asset = asset
-        self.createdDate = creationDate
     }
         
     public var isMemory: Bool {
         let today = Calendar.current.dateComponents([.month, .day], from: Date())
-        let createdDate = Calendar.current.dateComponents([.month, .day], from: createdDate)
-        return today.month == createdDate.month && today.month == createdDate.month
+        let createdDateMonthDay = Calendar.current.dateComponents([.month, .day], from: createdDate)
+        return today.month == createdDateMonthDay.month
+            && today.day == createdDateMonthDay.day
     }
     
-    public var createdWhen: String {
-        createdDate
-            .formatted(
-                .dateTime
-                .year(.defaultDigits)
-                .month(.abbreviated)
-                .day(.defaultDigits)
-                .hour()
-                .minute()
-            )
+    public var createdWhen: String? {
+        createdDate.formatted(
+            .dateTime
+            .year(.defaultDigits)
+            .month(.abbreviated)
+            .day(.defaultDigits)
+            .hour()
+            .minute()
+        )
     }
     
     public var placeholderImage: UIImage {

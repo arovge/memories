@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PhotosUnavailableView: View {
+struct NoPhotosAccessView: View {
     @Environment(\.openURL) var openURL
     
     var body: some View {
