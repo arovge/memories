@@ -2,7 +2,7 @@ import SwiftUI
 import AVKit
 import MemoriesModels
 
-struct PlaceholderView: View {
+struct ImagePreview: View {
     @Namespace var animation
     @Environment(DashboardViewModel.self) var viewModel
     @State var loading = true
@@ -44,6 +44,11 @@ struct PlaceholderView: View {
                     targetSize: CGSize(width: 200, height: 200)
                 )
                 loading = false
+            }
+            .overlay {
+                if media.asset.mediaType == .video {
+                    Image(systemSymbol: .playFill)
+                }
             }
         }
         .disabled(image == nil)

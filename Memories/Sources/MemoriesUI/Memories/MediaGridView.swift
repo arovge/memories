@@ -26,7 +26,7 @@ struct MediaGridView: View {
             
         LazyVGrid(columns: gridLayout, spacing: 10) {
             ForEach(section.media) { memory in
-                PlaceholderView(for: memory, gridLayout: gridLayout)
+                ImagePreview(for: memory, gridLayout: gridLayout)
             }
         }
         .padding(.bottom)
