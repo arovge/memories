@@ -26,23 +26,14 @@ struct MediaGridView: View {
             
         LazyVGrid(columns: gridLayout, spacing: 10) {
             ForEach(section.media) { memory in
-                NavigationLink(
-                    destination: MediaView(
-                        for: memory,
-                        share: {
+                PlaceholderView(for: memory, gridLayout: gridLayout)
+                    .contextMenu {
+                        Button {
                             viewModel.share(year: section.year, media: memory)
+                        } label: {
+                            Label("Share", systemImage: "square.and.arrow.up")
                         }
-                    )
-                ) {
-                    PlaceholderView(for: memory, gridLayout: gridLayout)
-                }
-                .contextMenu {
-                    Button {
-                        viewModel.share(year: section.year, media: memory)
-                    } label: {
-                        Label("Share", systemImage: "square.and.arrow.up")
                     }
-                }
             }
         }
     }

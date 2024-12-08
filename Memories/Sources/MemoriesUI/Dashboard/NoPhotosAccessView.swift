@@ -10,7 +10,7 @@ struct NoPhotosAccessView: View {
             Text("Allow photos access in settings to find memories")
         } actions: {
             Button("Settings") {
-                openURL.callAsFunction(URL(string: UIApplication.openSettingsURLString)!)
+                openURL(URL(string: UIApplication.openSettingsURLString)!)
             }
         }
     }

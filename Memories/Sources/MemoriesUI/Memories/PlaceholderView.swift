@@ -3,6 +3,7 @@ import AVKit
 import MemoriesModels
 
 struct PlaceholderView: View {
+    @Namespace var animation
     @Environment(DashboardViewModel.self) var viewModel
     @State var loading = true
     @State var image = UIImage?.none
@@ -15,21 +16,33 @@ struct PlaceholderView: View {
     }
     
     var body: some View {
-        VStack {
+        NavigationLink {
             if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .frame(height: gridLayout.count == 1 ? 200 : 100)
-                    .cornerRadius(5)
-            } else {
-                ProgressView()
+                FullScreenMemoryView(for: media, preview: image) {
+                    viewModel.share(year: 0, media: media)
+                }
+                .navigationTransition(.zoom(sourceID: "image", in: animation))
+            }
+        } label: {
+            VStack {
+                // TOOD: Handle error loading state
+                if let image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .frame(height: gridLayout.count == 1 ? 200 : 100)
+                        .cornerRadius(5)
+                        .matchedTransitionSource(id: "image", in: animation)
+                } else {
+                    ProgressView()
+                }
+            }
+            .task {
+                image = await viewModel.getImage(media.asset)
+                loading = false
             }
         }
-        .task {
-            image = await viewModel.getImage(media.asset)
-            loading = false
-        }
+        .disabled(image == nil)
     }
 }

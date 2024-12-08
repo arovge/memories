@@ -1,28 +1,23 @@
 import SwiftUI
-import AVKit
 import MemoriesModels
 
-struct MediaView: View {
-    @Environment(DashboardViewModel.self) var viewModel
+struct FullScreenMemoryView: View {
     @State var loading = true
-    @State var image = UIImage?.none
+    @State var image: UIImage
     let media: MediaWrapper
     let share: () -> Void
     
-    init(for media: MediaWrapper, share: @escaping () -> Void) {
+    init(for media: MediaWrapper, preview: UIImage, share: @escaping () -> Void) {
         self.media = media
+        self._image = State(initialValue: preview)
         self.share = share
     }
     
     var body: some View {
         VStack {
-            if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-            } else {
-                ProgressView()
-            }
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFit()
 //            Image(systemSymbol: .photo)
 //            switch media.asset {
 //            case .image(let image):
@@ -40,10 +35,9 @@ struct MediaView: View {
 //            }
         }
         .task {
-            print("started")
-            image = await viewModel.getImage(media.asset)
+            // TODO: Load higher quality version here
+//            image = await viewModel.getImage(media.asset)
             loading = false
-            print("finished....")
         }
         .toolbar {
             if let createdWhen = media.createdWhen {
@@ -59,7 +53,9 @@ struct MediaView: View {
     }
     
     var shareButton: some View {
-        Button(action: share) {
+        Button {
+            share()
+        } label: {
             Label("Share", systemSymbol: .squareAndArrowUp)
         }
     }

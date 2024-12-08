@@ -40,9 +40,6 @@ public struct DashboardView: View {
                 trailing()
             }
         }
-        .task {
-            await viewModel.handleAppear()
-        }
         .onChange(of: scenePhase) { oldValue, newValue in
             guard oldValue != .active && newValue == .active else { return }
             Task {

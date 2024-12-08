@@ -5,11 +5,11 @@ import Photos
 
 @Observable
 class DashboardViewModel {
-    var memorySections = [MemorySection]()
     var layout = ColumnLayout.single
     var loading = true
     var hasPhotosAccess = false
     var error = false
+    var memorySections = [MemorySection]()
     
     let currentMonthAndDay: String = Date
         .now
@@ -38,14 +38,16 @@ class DashboardViewModel {
         
         guard hasPhotosAccess else { return }
         
-        getAssets()
+        assets = photosService.getAssets()
+        memorySections = computeMemorySections()
     }
     
     func checkPhotosAccess() async {
         let result = await photosService.requestAccess()
                 
         hasPhotosAccess = switch result {
-        case .notDetermined: // need to prompt here
+        case .notDetermined:
+            // TODO: Prompt if access is not determined
             false
         case .restricted:
             true
@@ -60,31 +62,10 @@ class DashboardViewModel {
         }
     }
     
-    func getAssets() {
-        assets = photosService.getAssets()
-        
-//        photosService.fetchMedia(addMedia: self.addMedia)
-        let sections = computeMemorySections()
-        
-        memorySections = sections
-        loading = false
-    }
-    
-    func getImage(_ asset: PHAsset) async -> UIImage? {
-        do {
-            return try await photosService.getImage(id: asset.localIdentifier)
-        } catch {
-            logger.log(error)
-            return nil
-        }
-    }
-    
     func computeMemorySections() -> [MemorySection] {
         var media = [MediaWrapper]()
         
         assets.enumerateObjects { asset, _, _ in
-            guard let creationDate = asset.creationDate else { return }
-            
             // Only worrying about image support for now
             guard asset.mediaType == .image else { return }
             guard let wrapper = MediaWrapper(asset: asset) else {
@@ -107,6 +88,15 @@ class DashboardViewModel {
                 )
             }
             .sorted(by: { $0.year > $1.year })
+    }
+    
+    func getImage(_ asset: PHAsset) async -> UIImage? {
+        do {
+            return try await photosService.getImage(id: asset.localIdentifier)
+        } catch {
+            logger.log(error)
+            return nil
+        }
     }
     
     func toggleLayout() {
