@@ -18,9 +18,15 @@ struct ImagePreview: View {
     var body: some View {
         NavigationLink {
             if let preview {
-                ImageViewer(for: media, preview: preview)
-                    .navigationTransition(.zoom(sourceID: "image", in: animation))
-                    .environment(viewModel)
+                if media.asset.mediaType == .video {
+                    VideoViewer(for: media, preview: preview)
+                        .navigationTransition(.zoom(sourceID: "image", in: animation))
+                        .environment(viewModel)
+                } else {
+                    ImageViewer(for: media, preview: preview)
+                        .navigationTransition(.zoom(sourceID: "image", in: animation))
+                        .environment(viewModel)
+                }
             }
         } label: {
             VStack {

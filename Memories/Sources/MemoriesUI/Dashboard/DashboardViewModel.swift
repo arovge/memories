@@ -93,10 +93,19 @@ class DashboardViewModel {
     ) async -> UIImage? {
         do {
             return try await photosService.getImage(
-                id: asset.localIdentifier,
+                asset: asset,
                 targetSize: targetSize ?? PHImageManagerMaximumSize,
                 contentMode: contentMode
             )
+        } catch {
+            logger.log(error)
+            return nil
+        }
+    }
+    
+    func getVideo(asset: PHAsset) async -> AVPlayerItem? {
+        do {
+            return try await photosService.getVideo(asset: asset)
         } catch {
             logger.log(error)
             return nil

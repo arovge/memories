@@ -4,15 +4,19 @@ import MemoriesModels
 public class PhotosService {
     private let logger = Logger()
     private let imageRequestOptions = PHImageRequestOptions()
+    private let videoRequestOptions = PHVideoRequestOptions()
     private let imageCachingManager = PHCachingImageManager()
     
     public init() {
-        imageCachingManager.allowsCachingHighQualityImages = true
-        
         imageRequestOptions.isNetworkAccessAllowed = true
         imageRequestOptions.isSynchronous = true
         imageRequestOptions.deliveryMode = .opportunistic
         imageRequestOptions.resizeMode = .fast
+        
+        videoRequestOptions.isNetworkAccessAllowed = true
+        videoRequestOptions.deliveryMode = .fastFormat
+        
+        imageCachingManager.allowsCachingHighQualityImages = true
     }
     
     public func requestAccess() async -> PHAuthorizationStatus {
@@ -36,19 +40,11 @@ public class PhotosService {
     }
     
     public func getImage(
-        id: String,
+        asset: PHAsset,
         targetSize: CGSize,
         contentMode: PHImageContentMode
     ) async throws -> UIImage? {
-        let results = PHAsset.fetchAssets(
-            withLocalIdentifiers: [id],
-            options: nil
-        )
-        guard let asset = results.firstObject else {
-            throw PhotosError.assetNotFound
-        }
-        
-        return try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { continuation in
             imageCachingManager.requestImage(
                 for: asset,
                 targetSize: targetSize,
@@ -65,23 +61,19 @@ public class PhotosService {
         }
     }
     
-//    public func requestVideo(for asset: PHAsset) async throws -> MediaWrapper? {
-//        try await withCheckedThrowingContinuation { continuation in
-//            PHCachingImageManager.default().requestPlayerItem(
-//                forVideo: asset,
-//                options: nil,
-//                resultHandler: { video, options in
-//                    if let video {
-//                        continuation.resume(
-//                            returning: MediaWrapper(media: .video(video), asset: asset)
-//                        )
-//                    }
-//                    continuation.resume(throwing: PhotosError.unknown)
-//                })
-//        }
-//    }
-    
-    enum PhotosError: Error {
-        case assetNotFound
+    public func getVideo(
+        asset: PHAsset ) async throws -> AVPlayerItem? {
+        try await withCheckedThrowingContinuation { continuation in
+            imageCachingManager.requestPlayerItem(
+                forVideo: asset,
+                options: videoRequestOptions,
+                resultHandler: { playerItem, info in
+                    if let error = info?[PHImageErrorKey] as? Error {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    continuation.resume(returning: playerItem)
+                })
+        }
     }
 }
