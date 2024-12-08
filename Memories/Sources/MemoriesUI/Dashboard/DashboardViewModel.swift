@@ -1,15 +1,15 @@
 import SwiftUI
 import MemoriesModels
 import MemoriesServices
-import MemoriesUtility
+import Photos
 
 @Observable
 class DashboardViewModel {
-    var memorySections = [MemorySection]()
-    var layout = ColumnLayout.single
+    var layout = ColumnLayout.triple
     var loading = true
     var hasPhotosAccess = false
     var error = false
+    var memorySections = [MemorySection]()
     
     let currentMonthAndDay: String = Date
         .now
@@ -19,28 +19,35 @@ class DashboardViewModel {
             .month(.abbreviated)
             .day(.defaultDigits)
         )
-    private var requestedMedia: [MediaWrapper] = []
-    private let photosService: PhotosService = PhotosService()
+    
+    private var assets = PHFetchResult<PHAsset>()
+    private let photosService = PhotosService()
     private let logger = Logger()
-    private var loaded: Bool = false
+    private var loaded = false
+    
+    var hasMemories: Bool {
+        !memorySections.isEmpty
+    }
     
     func handleAppear(force: Bool = false) async {
-        defer { loading = false }
-        if loaded || !force { return }
+        guard !loaded || force || !hasPhotosAccess else { return }
         loaded = true
+        defer { loading = false }
         
         await checkPhotosAccess()
         
         guard hasPhotosAccess else { return }
         
-        fetchPhotos()
+        assets = photosService.getAssets()
+        memorySections = computeMemorySections()
     }
     
     func checkPhotosAccess() async {
         let result = await photosService.requestAccess()
                 
         hasPhotosAccess = switch result {
-        case .notDetermined: // need to prompt here
+        case .notDetermined:
+            // TODO: Prompt if access is not determined
             false
         case .restricted:
             true
@@ -55,17 +62,20 @@ class DashboardViewModel {
         }
     }
     
-    func fetchPhotos() {
-        print("yo")
-        photosService.fetchMedia(addMedia: self.addMedia)
-        let sections = computeMemorySections()
-        
-        memorySections = sections
-        loading = false
-    }
-    
     func computeMemorySections() -> [MemorySection] {
-        let mediaGroupedByYear = self.requestedMedia.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
+        var media = [MediaWrapper]()
+        
+        assets.enumerateObjects { asset, _, _ in
+            // FUTURE: Remove this check when the app supports videos
+            guard asset.mediaType == .image else { return }
+            guard let wrapper = MediaWrapper(asset: asset) else {
+                return
+            }
+            guard wrapper.isMemory else { return }
+            media.append(wrapper)
+        }
+        
+        let mediaGroupedByYear = media.reduce(into: [:] as [Int: [MediaWrapper]]) { acc, media in
             let components = Calendar.current.dateComponents([.year], from: media.createdDate)
             guard let year = components.year else { return }
             acc[year, default: []].append(media)
@@ -73,50 +83,46 @@ class DashboardViewModel {
         
         return mediaGroupedByYear
             .map { key, values in
-                MemorySection(year: key, memories: values.sorted(by: { $0.createdDate > $1.createdDate }))
+                MemorySection(
+                    year: key,
+                    media: values.sorted(by: { $0.createdDate > $1.createdDate })
+                )
             }
             .sorted(by: { $0.year > $1.year })
     }
     
-    func addMedia(wrapper: MediaWrapper) {
-        self.requestedMedia.append(wrapper)
+    func getImage(
+        _ asset: PHAsset,
+        targetSize: CGSize?,
+        contentMode: PHImageContentMode = .default
+    ) async -> UIImage? {
+        do {
+            return try await photosService.getImage(
+                id: asset.localIdentifier,
+                targetSize: targetSize ?? PHImageManagerMaximumSize,
+                contentMode: contentMode
+            )
+        } catch {
+            logger.log(error)
+            return nil
+        }
     }
     
-    func toggleLayout() {
-        layout = layout.next()
-    }
-    
-    func viewMediaInPhotos() {
-        
-    }
-    
-    func sendNotification() {
-        var date = DateComponents()
+    func sendNotification() async {
         // 8am
-        date.hour = 8
-        date.minute = 0
+        let date = DateComponents(hour: 8, minute: 0)
+
         let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
-        let request: UNNotificationRequest = .init(
+        let request = UNNotificationRequest(
             identifier: "Shaba",
             content: .init(),
             trigger: trigger
         )
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-            if let error = error {
-                self.logger.log(error)
-            } else {
-                self.logger.info("Notification sent")
-            }
-        })
-    }
-    
-    func share(year: Int, media: MediaWrapper) {
-        let text = "My memory from \(currentMonthAndDay), \(year)"
-        let itemSource = ActivityItemSource(text: text, image: media.placeholderImage)
-        let activityController = UIActivityViewController(
-            activityItems: [media.placeholderImage, text, itemSource],
-            applicationActivities: nil
-        )
-        UIApplication.shared.windows.first?.rootViewController?.present(activityController, animated: true, completion: nil)
+        do {
+            try await UNUserNotificationCenter.current().add(request)
+            logger.info("Notification scheduled")
+        } catch {
+            logger.log(error)
+        }
     }
 }

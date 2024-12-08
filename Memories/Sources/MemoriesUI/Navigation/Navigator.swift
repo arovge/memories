@@ -1,7 +1,12 @@
 import SwiftUI
 
+enum Route {
+    case dashboard
+    case settings
+}
+
 @Observable
-class Navigator: ObservableObject {
+class Navigator {
     var path = [Route.dashboard]
     
     func push(_ route: Route) {

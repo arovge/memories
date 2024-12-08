@@ -1,62 +1,35 @@
-import UIKit
 import PhotosUI
-import MemoriesUtility
 
-public enum Media: Hashable {
-    case image(UIImage)
-    case video(AVPlayerItem)
-    
-    func get() -> Any {
-        switch self {
-        case .image(let image):
-            return image
-        case .video(let playerItem):
-            return playerItem
-        }
-    }
-}
-
-// TODO: Support video
 public struct MediaWrapper: Hashable {
-    public let media: Media
-    let asset: PHAsset
+    public let asset: PHAsset
     public let createdDate: Date
     
-//    public init(image: Media, asset: PHAsset) {
-//        
-//    }
-    
-    public init?(media: Media, asset: PHAsset) {
-        guard let creationDate = asset.creationDate else { return nil }
-        self.media = media
+    public init?(asset: PHAsset) {
+        guard let createdDate = asset.creationDate else { return nil }
+        self.createdDate = createdDate
         self.asset = asset
-        self.createdDate = creationDate
     }
-        
+
     public var isMemory: Bool {
-        let today = Calendar.current.dateComponents([.month, .day], from: Date())
-        let createdDate = Calendar.current.dateComponents([.month, .day], from: createdDate)
-        return today.month == createdDate.month && today.month == createdDate.month
+        let today = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        let createdDate = Calendar.current.dateComponents([.year, .month, .day], from: createdDate)
+        return today.month == createdDate.month
+            && today.day == createdDate.day
+            && today.year != createdDate.year
     }
     
     public var createdWhen: String {
-        createdDate
-            .formatted(
-                .dateTime
-                .year(.defaultDigits)
-                .month(.abbreviated)
-                .day(.defaultDigits)
-                .hour()
-                .minute()
-            )
+        createdDate.formatted(
+            .dateTime
+            .year(.defaultDigits)
+            .month(.abbreviated)
+            .day(.defaultDigits)
+            .hour()
+            .minute()
+        )
     }
-    
-    public var placeholderImage: UIImage {
-        switch media {
-        case .image(let image):
-            return image
-        case .video(let playerItem):
-            return UIImage()//UIImage(systemSymbol: .playFill) ?? UIImage()
-        }
-    }
+}
+
+extension MediaWrapper: Identifiable {
+    public var id: String { asset.localIdentifier }
 }

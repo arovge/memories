@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(Navigator.self) var navigator
     @Environment(\.openURL) var openURL
     @State var viewModel = SettingsViewModel()
     
@@ -18,9 +18,9 @@ struct SettingsView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Save") {
                     viewModel.save()
-                    dismiss()
+                    navigator.back()
                 }
-                .disabled(true) // TODO: Fix
+                .disabled(true) // TODO: Check if modified
             }
         }
         .task {

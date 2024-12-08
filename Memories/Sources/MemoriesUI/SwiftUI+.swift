@@ -1,9 +1,5 @@
 import SwiftUI
 
-extension Color {
-    public static var secondaryLabel: Color { .init(.secondaryLabel) }
-}
-
 public enum SystemSymbol: String {
     case ellipsis = "ellipsis"
     case gearshape = "gearshape"

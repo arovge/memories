@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PhotosUnavailableView: View {
+struct NoPhotosAccessView: View {
     @Environment(\.openURL) var openURL
     
     var body: some View {
@@ -10,7 +10,7 @@ struct PhotosUnavailableView: View {
             Text("Allow photos access in settings to find memories")
         } actions: {
             Button("Settings") {
-                openURL.callAsFunction(URL(string: UIApplication.openSettingsURLString)!)
+                openURL(URL(string: UIApplication.openSettingsURLString)!)
             }
         }
     }
