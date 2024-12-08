@@ -4,11 +4,16 @@ import MemoriesUtility
 
 public class PhotosService {
     private let logger = Logger()
-    private let imageRequestOptions: PHImageRequestOptions = PHImageRequestOptions()
+    private let imageRequestOptions = PHImageRequestOptions()
+    private let imageCachingManager = PHCachingImageManager()
     
     public init() {
+        imageCachingManager.allowsCachingHighQualityImages = true
+        
         imageRequestOptions.isNetworkAccessAllowed = true
         imageRequestOptions.isSynchronous = true
+        imageRequestOptions.deliveryMode = .opportunistic
+        imageRequestOptions.resizeMode = .fast
     }
     
     public func requestAccess() async -> PHAuthorizationStatus {
@@ -29,23 +34,36 @@ public class PhotosService {
         )
         
         return PHAsset.fetchAssets(with: fetchOptions)
-//
-//        return try await withCheckedThrowingContinuation { continutation in
-//            var media = [MediaWrapper]()
-//            assets.enumerateObjects { asset, _, _ in
-//                switch asset.mediaType {
-//                case .image:
-//                    break
-//    //                self.requestImage(for: asset, callback: addMedia)
-//                case .video:
-//                    break
-//    //                self.requestVideo(for: asset, callback: addMedia)
-//                default:
-//                    self.logger.info("Unknown media type: \(asset.mediaType)")
-//                }
-//            }
-//            continutation.resume(returning: media)
-//        }
+    }
+    
+    public func getImage(
+        id: String,
+        targetSize: CGSize = PHImageManagerMaximumSize,
+        contentMode: PHImageContentMode = .default
+    ) async throws -> UIImage? {
+        let results = PHAsset.fetchAssets(
+            withLocalIdentifiers: [id],
+            options: nil
+        )
+        guard let asset = results.firstObject else {
+            throw PhotosError.assetNotFound
+        }
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            imageCachingManager.requestImage(
+                for: asset,
+                targetSize: targetSize,
+                contentMode: contentMode,
+                options: imageRequestOptions,
+                resultHandler: { image, info in
+                    if let error = info?[PHImageErrorKey] as? Error {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    continuation.resume(returning: image)
+                }
+            )
+        }
     }
     
 //    public func requestImage(for asset: PHAsset) async throws -> MediaWrapper? {
@@ -84,6 +102,6 @@ public class PhotosService {
 //    }
     
     enum PhotosError: Error {
-        case unknown
+        case assetNotFound
     }
 }

@@ -3,6 +3,9 @@ import AVKit
 import MemoriesModels
 
 struct MediaView: View {
+    @Environment(DashboardViewModel.self) var viewModel
+    @State var loading = true
+    @State var image = UIImage?.none
     let media: MediaWrapper
     let share: () -> Void
     
@@ -13,7 +16,14 @@ struct MediaView: View {
     
     var body: some View {
         VStack {
-            Image(systemSymbol: .photo)
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                ProgressView()
+            }
+//            Image(systemSymbol: .photo)
 //            switch media.asset {
 //            case .image(let image):
 //                Image(uiImage: image)
@@ -28,6 +38,12 @@ struct MediaView: View {
 //                        shareButton
 //                    }
 //            }
+        }
+        .task {
+            print("started")
+            image = await viewModel.getImage(media.asset)
+            loading = false
+            print("finished....")
         }
         .toolbar {
             if let createdWhen = media.createdWhen {

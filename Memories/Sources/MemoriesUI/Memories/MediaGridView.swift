@@ -12,21 +12,20 @@ struct MediaGridView: View {
         ForEach(viewModel.memorySections) { section in
             renderYear(section)
         }
-        .padding(10)
+        .padding(.vertical, 10)
+        .padding(.horizontal, 20)
         .animation(.interactiveSpring(), value: gridLayout.count)
     }
     
     @ViewBuilder
     func renderYear(_ section: MemorySection) -> some View {
-        HStack {
-            Text(String(section.year))
-                .foregroundColor(.secondary)
-                .font(.headline)
-            Spacer()
-        }
+        Text(String(section.year))
+            .foregroundColor(.secondary)
+            .font(.headline)
+            .frame(maxWidth: .infinity, alignment: .leading)
             
         LazyVGrid(columns: gridLayout, spacing: 10) {
-            ForEach(section.media, id: \.self) { memory in
+            ForEach(section.media) { memory in
                 NavigationLink(
                     destination: MediaView(
                         for: memory,
@@ -35,13 +34,7 @@ struct MediaGridView: View {
                         }
                     )
                 ) {
-                    ProgressView()
-//                        Image(uiImage: memory.placeholderImage)
-//                            .resizable()
-//                            .scaledToFill()
-//                            .frame(minWidth: 0, maxWidth: .infinity)
-//                            .frame(height: gridLayout.count == 1 ? 200 : 100)
-//                            .cornerRadius(5)
+                    PlaceholderView(for: memory, gridLayout: gridLayout)
                 }
                 .contextMenu {
                     Button {

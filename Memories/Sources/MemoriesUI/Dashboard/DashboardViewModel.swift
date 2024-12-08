@@ -71,8 +71,13 @@ class DashboardViewModel {
         loading = false
     }
     
-    func getImage() async throws -> UIImage? {
-        nil
+    func getImage(_ asset: PHAsset) async -> UIImage? {
+        do {
+            return try await photosService.getImage(id: asset.localIdentifier)
+        } catch {
+            logger.log(error)
+            return nil
+        }
     }
     
     func computeMemorySections() -> [MemorySection] {
@@ -118,24 +123,22 @@ class DashboardViewModel {
         
     }
     
-    func sendNotification() {
-        var date = DateComponents()
+    func sendNotification() async {
         // 8am
-        date.hour = 8
-        date.minute = 0
+        let date = DateComponents(hour: 8, minute: 0)
+
         let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
-        let request: UNNotificationRequest = .init(
+        let request = UNNotificationRequest(
             identifier: "Shaba",
             content: .init(),
             trigger: trigger
         )
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-            if let error = error {
-                self.logger.log(error)
-            } else {
-                self.logger.info("Notification sent")
-            }
-        })
+        do {
+            try await UNUserNotificationCenter.current().add(request)
+            logger.info("Notification scheduled")
+        } catch {
+            logger.log(error)
+        }
     }
     
     func share(year: Int, media: MediaWrapper) {

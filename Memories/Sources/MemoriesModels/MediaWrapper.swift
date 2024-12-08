@@ -56,3 +56,7 @@ public struct MediaWrapper: Hashable {
 //        }
 //    }
 }
+
+extension MediaWrapper: Identifiable {
+    public var id: String { asset.localIdentifier }
+}
