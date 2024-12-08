@@ -43,7 +43,7 @@ public class PhotosService {
         asset: PHAsset,
         targetSize: CGSize,
         contentMode: PHImageContentMode
-    ) async throws -> UIImage? {
+    ) async throws -> UIImage {
         try await withCheckedThrowingContinuation { continuation in
             imageCachingManager.requestImage(
                 for: asset,
@@ -51,29 +51,32 @@ public class PhotosService {
                 contentMode: contentMode,
                 options: imageRequestOptions,
                 resultHandler: { image, info in
-                    if let error = info?[PHImageErrorKey] as? Error {
-                        continuation.resume(throwing: error)
-                        return
+                    if let image {
+                        continuation.resume(returning: image)
                     }
-                    continuation.resume(returning: image)
+                    let error = info?[PHImageErrorKey] as? Error
+                    continuation.resume(throwing: PhotosError.loading(error))
                 }
             )
         }
     }
     
-    public func getVideo(
-        asset: PHAsset ) async throws -> AVPlayerItem? {
+    public func getVideo(asset: PHAsset) async throws -> AVPlayerItem {
         try await withCheckedThrowingContinuation { continuation in
             imageCachingManager.requestPlayerItem(
                 forVideo: asset,
                 options: videoRequestOptions,
                 resultHandler: { playerItem, info in
-                    if let error = info?[PHImageErrorKey] as? Error {
-                        continuation.resume(throwing: error)
-                        return
+                    if let playerItem {
+                        continuation.resume(returning: playerItem)
                     }
-                    continuation.resume(returning: playerItem)
+                    let error = info?[PHImageErrorKey] as? Error
+                    continuation.resume(throwing: PhotosError.loading(error))
                 })
         }
+    }
+    
+    public enum PhotosError: Error {
+        case loading((any Error)?)
     }
 }
