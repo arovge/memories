@@ -35,6 +35,7 @@ struct ImageViewer: View {
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .statusBarHidden(!showToolbar)
+        .toolbarBackgroundVisibility(showToolbar ? .visible : .hidden, for: .navigationBar)
         .toolbarVisibility(showToolbar ? .visible : .hidden, for: .navigationBar)
         .toolbarBackground(.black, for: .navigationBar)
         .toolbar {
