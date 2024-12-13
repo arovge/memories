@@ -29,20 +29,21 @@ struct ImagePreview: View {
                 }
             }
         } label: {
-            VStack {
+            ZStack {
                 // TOOD: Handle error loading state
                 if let preview {
                     Image(uiImage: preview)
                         .resizable()
                         .scaledToFill()
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .frame(height: gridLayout.count == 1 ? 200 : 100)
-                        .cornerRadius(5)
                         .matchedTransitionSource(id: "image", in: animation)
-                } else {
-                    ProgressView()
                 }
+                Color.gray
+                    .opacity(preview == nil ? 1 : 0)
             }
+            .animation(.easeInOut, value: preview == nil)
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .frame(height: gridLayout.count == 1 ? 200 : 100)
+            .cornerRadius(5)
             .task {
                 guard preview == nil else { return }
                 preview = await viewModel.getImage(
