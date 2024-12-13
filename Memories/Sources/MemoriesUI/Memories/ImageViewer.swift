@@ -44,6 +44,7 @@ struct ImageViewer: View {
                     dismiss()
                 } label: {
                     Image(systemSymbol: .chevronLeft)
+                        .fontWeight(.semibold)
                 }
             }
             ToolbarItem(placement: .principal) {
@@ -59,6 +60,7 @@ struct ImageViewer: View {
                 if let fullImage {
                     let photo = Image(uiImage: fullImage)
                     ShareLink(item: photo, preview: SharePreview(media.createdWhen, image: photo))
+                        .fontWeight(.semibold)
                 }
             }
         }
