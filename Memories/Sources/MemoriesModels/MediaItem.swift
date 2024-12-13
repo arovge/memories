@@ -19,11 +19,21 @@ public struct MediaItem: Hashable {
     }
     
     public var createdWhen: String {
+        "\(createdWhenDate) \(createdWhenTime)"
+    }
+    
+    public var createdWhenDate: String {
         createdDate.formatted(
             .dateTime
             .year(.defaultDigits)
-            .month(.abbreviated)
+            .month(.wide)
             .day(.defaultDigits)
+        )
+    }
+    
+    public var createdWhenTime: String {
+        createdDate.formatted(
+            .dateTime
             .hour()
             .minute()
         )

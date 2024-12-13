@@ -47,8 +47,13 @@ struct ImageViewer: View {
                 }
             }
             ToolbarItem(placement: .principal) {
-                Text(media.createdWhen)
-                    .font(.subheadline)
+                VStack {
+                    Text(media.createdWhenDate)
+                        .font(.subheadline.weight(.semibold))
+                    Text(media.createdWhenTime)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
             }
             ToolbarItemGroup {
                 if let fullImage {
