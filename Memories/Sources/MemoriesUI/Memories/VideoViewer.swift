@@ -1,21 +1,37 @@
 import SwiftUI
 import AVKit
+import MemoriesModels
 
 struct VideoViewer: View {
-    @State var player: AVPlayer
+    @Environment(DashboardViewModel.self) var viewModel
+    let media: MediaItem
+    let preview: UIImage
+    @State var loading = true
+    @State var player: AVPlayer?
     
-    init(playerItem: AVPlayerItem) {
-        // A copy is required as only one AVPlayerItem can be associated with an AVPlayer at a time
-        // Even though the SwiftUI view is destroyed when leaving this screen, and onDisappear replaces the current item,
-        // it still isn't enough for the item to become dissociated from the player
-        let item = playerItem.copy() as! AVPlayerItem
-        self.player = AVPlayer(playerItem: item)
+    init(for media: MediaItem, preview: UIImage) {
+        self.media = media
+        self.preview = preview
     }
     
     var body: some View {
-        VideoPlayer(player: player)
-            .onDisappear {
-                self.player.replaceCurrentItem(with: nil)
+        VStack {
+            if let player {
+                VideoPlayer(player: player)
+                    .onDisappear {
+                        self.player?.replaceCurrentItem(with: nil)
+                    }
+            } else {
+                Image(uiImage: preview)
+                    .resizable()
+                    .scaledToFit()
             }
+        }
+        .task {
+            if let item = await viewModel.getVideo(asset: media.asset) {
+                player = AVPlayer(playerItem: item)
+            }
+            loading = false
+        }
     }
 }
