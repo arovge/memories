@@ -10,6 +10,7 @@ public enum SystemSymbol: String {
     case xmark = "xmark"
     case photo = "photo"
     case photoOnRectangleAngled = "photo.on.rectangle.angled"
+    case chevronLeft = "chevron.left"
 }
 
 extension Label where Title == Text, Icon == Image {

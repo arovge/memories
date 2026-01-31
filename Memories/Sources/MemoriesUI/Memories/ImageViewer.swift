@@ -3,41 +3,75 @@ import MemoriesModels
 
 struct ImageViewer: View {
     @Environment(DashboardViewModel.self) var viewModel
-    @State var fullImage: UIImage?
-    let media: MediaWrapper
-    let preview: UIImage
+    @Environment(\.dismiss) var dismiss
+    @Binding var image: UIImage?
+    @State var showToolbar = true
+    let media: MediaItem
     
-    init(for media: MediaWrapper, preview: UIImage) {
+    init(for media: MediaItem, preview: Binding<UIImage?>) {
         self.media = media
-        self.preview = preview
+        self._image = preview
     }
     
     var body: some View {
         VStack {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-        }
-        .task {
-            guard fullImage == nil else { return }
-            // Load higher quality image to use instead of lower quality preview
-            fullImage = await viewModel.getImage(media.asset, targetSize: nil)
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(media.createdWhen)
-                    .font(.subheadline)
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                ProgressView()
             }
-            if let fullImage {
-                ToolbarItem(placement: .topBarTrailing) {
-                    let photo = Image(uiImage: fullImage)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onTapGesture {
+            withAnimation(.interactiveSpring) {
+                showToolbar.toggle()
+            }
+        }
+        .ignoresSafeArea()
+        .task {
+//            guard image == nil else { return }
+            // Load higher quality image to use instead of lower quality preview
+            if let fullImage = await viewModel.getImage(media.asset, targetSize: nil) {
+                image = fullImage
+            }
+        }
+        .navigationBarBackButtonHidden()
+        .navigationBarTitleDisplayMode(.inline)
+        .statusBarHidden(!showToolbar)
+        .toolbarBackgroundVisibility(showToolbar ? .visible : .hidden, for: .navigationBar)
+        .toolbarVisibility(showToolbar ? .visible : .hidden, for: .navigationBar)
+        .toolbarBackground(.black, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemSymbol: .chevronLeft)
+                        .fontWeight(.semibold)
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                VStack {
+                    Text(media.createdWhenDate)
+                        .font(.subheadline.weight(.semibold))
+                    Text(media.createdWhenTime)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            ToolbarItemGroup {
+                if let image {
+                    let photo = Image(uiImage: image)
                     ShareLink(item: photo, preview: SharePreview(media.createdWhen, image: photo))
+                        .fontWeight(.semibold)
                 }
             }
         }
     }
     
-    var image: UIImage {
-        fullImage ?? preview
-    }
+//    var image: UIImage {
+//        fullImage ?? preview
+//    }
 }
