@@ -23,7 +23,7 @@ struct ImagePreview: View {
                         .navigationTransition(.zoom(sourceID: "image", in: animation))
                         .environment(viewModel)
                 } else {
-                    ImageViewer(for: media, preview: preview)
+                    ImageViewer(for: media, preview: $preview)
                         .navigationTransition(.zoom(sourceID: "image", in: animation))
                         .environment(viewModel)
                 }

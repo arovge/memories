@@ -4,21 +4,24 @@ import MemoriesModels
 struct ImageViewer: View {
     @Environment(DashboardViewModel.self) var viewModel
     @Environment(\.dismiss) var dismiss
-    @State var fullImage: UIImage?
+    @Binding var image: UIImage?
     @State var showToolbar = true
     let media: MediaItem
-    let preview: UIImage
     
-    init(for media: MediaItem, preview: UIImage) {
+    init(for media: MediaItem, preview: Binding<UIImage?>) {
         self.media = media
-        self.preview = preview
+        self._image = preview
     }
     
     var body: some View {
         VStack {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                ProgressView()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onTapGesture {
@@ -28,9 +31,11 @@ struct ImageViewer: View {
         }
         .ignoresSafeArea()
         .task {
-            guard fullImage == nil else { return }
+//            guard image == nil else { return }
             // Load higher quality image to use instead of lower quality preview
-            fullImage = await viewModel.getImage(media.asset, targetSize: nil)
+            if let fullImage = await viewModel.getImage(media.asset, targetSize: nil) {
+                image = fullImage
+            }
         }
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
@@ -57,8 +62,8 @@ struct ImageViewer: View {
                 }
             }
             ToolbarItemGroup {
-                if let fullImage {
-                    let photo = Image(uiImage: fullImage)
+                if let image {
+                    let photo = Image(uiImage: image)
                     ShareLink(item: photo, preview: SharePreview(media.createdWhen, image: photo))
                         .fontWeight(.semibold)
                 }
@@ -66,7 +71,7 @@ struct ImageViewer: View {
         }
     }
     
-    var image: UIImage {
-        fullImage ?? preview
-    }
+//    var image: UIImage {
+//        fullImage ?? preview
+//    }
 }
